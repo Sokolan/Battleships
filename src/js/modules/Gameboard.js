@@ -1,6 +1,6 @@
 const Gameboard = () => {
-  const shipsBoard = Array(10).fill(Array(10).fill(null));
-  const hitsBoard = Array(10).fill(Array(10).fill(""));
+  const mShipsBoard = Array(10).fill(Array(10).fill(null));
+  const mHitsBoard = Array(10).fill(Array(10).fill(""));
   
   const getHitsBoard = () => {};
 
