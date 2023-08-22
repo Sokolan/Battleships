@@ -78,6 +78,14 @@ describe("Test placing ships", () => {
       gameboard = Gameboard();
     });
 
+    test("TEST: placing ships outside of board", () => {
+      expect(gameboard.placeShip([10,8], 1, "vertical")).toBe(false);
+    });
+
+    test("TEST: wrong orientation", () => {
+      expect(gameboard.placeShip([0,0], 1, "wrong")).toBe(false);
+    })
+
     test("TEST: can't put ship on another ship", () => {
       expect(gameboard.placeShip([5, 5], 1, "horizontal")).toBe(false);
     });
@@ -116,6 +124,56 @@ describe("Test placing ships", () => {
   });
 });
 
-describe("Test receiveAttack:", () => {});
+describe("Test receiveAttack:", () => {
+  let gameboard;
+  let testBoard;
+
+  describe("test basic functionality", () => {
+    beforeAll(() => {
+      gameboard = Gameboard();
+      gameboard.placeShip([0,0], 1, "horizontal");
+      testBoard = Array(10).fill(Array(10).fill(""));
+    });
+    test("TEST: hitting ship at [1,1]", () => {
+      expect(gameboard.getHitsBoard()).not.toContain("o");
+      expect(gameboard.getHitsBoard()).not.toContain("x");
+
+      expect(gameboard.recieveAttack([1,0])).toEqual("miss");
+      testBoard[1][0] = "x";
+      expect(gameboard.getHitsBoard()).toEqual(testBoard);
+
+      expect(gameboard.recieveAttack([1,1])).toEqual("hit");
+      // ships was sank so it should mark the tiles around it too
+      testBoard[1][1] = "o";
+      testBoard[0][0] = "x";
+      testBoard[0][1] = "x";
+      testBoard[0][2] = "x";
+      testBoard[1][0] = "x";
+      testBoard[1][2] = "x";
+      testBoard[2][0] = "x";
+      testBoard[2][1] = "x";
+      testBoard[2][2] = "x";
+      expect(gameboard.getHitsBoard()).toEqual(testBoard);
+
+    });
+  })
+  describe("test for errors", () => {
+    beforeEach(() => {
+      gameboard = Gameboard();
+      testBoard = Array(10).fill(Array(10).fill(""));
+    });
+    test("TEST: hitting outside of the board", () => {
+      expect(gameboard.recieveAttack([10,4])).toBe(false);
+      expect(gameboard.recieveAttack([0,10])).toBe(false);
+      expect(gameboard.recieveAttack([10,10])).toBe(false);
+    });
+    test("TEST: hitting same target twice", () => {
+      gameboard.placeShip([0,0], 1, "horizontal");
+      expect(gameboard.recieveAttack([0,0])).toBe(true);
+      expect(gameboard.recieveAttack([0,0])).toBe(false);
+    });
+
+  })
+});
 
 describe("Test allShipsSunk:", () => {});
