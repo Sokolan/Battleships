@@ -11,8 +11,8 @@ const Player = (type) => {
   return {
     getType,
     getBoard,
-  }
-}
+  };
+};
 
 export const AIPlayer = () => {
   const player = Player("AI");
@@ -22,14 +22,22 @@ export const AIPlayer = () => {
   player.placeShips = (gameboard) => {};
 
   return player;
-}
+};
 
 export const HumanPlayer = () => {
   const player = Player("Human");
 
   player.makeMove = (enemyBoard, coordination) => {};
 
-  player.placeShips = (shipsLocations) => {}
+  player.placeShips = (
+    fourTileLocations,
+    fourTileOrientations,
+    threeTileLocations,
+    threeTileOrientations,
+    twoTilesLocations,
+    twoTilesOrientations,
+    oneTileLocations,
+  ) => {};
 
   return player;
-}
+};
