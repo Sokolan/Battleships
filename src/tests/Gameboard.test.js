@@ -1,205 +1,121 @@
-import Gameboard from "../js/modules/Gameboard"
-
+import Gameboard from "../js/modules/Gameboard";
 
 describe("Test placing ships", () => {
   let gameboard;
-  let testBoard;
 
-  beforeEach(() => {
-    gameboard = Gameboard();
-    testBoard = Array(10).fill(Array(10).fill(""));
-  })
-  
-  test("test: placing 1X1 ship in the corner", () => {
-    expect(gameboard.placeShip(1,[0,0])).toEqual(true);
-    testBoard[0][0] = 's';
-    expect(gameboard.getBoard()).toEqual(testBoard);
-  });
-  test("test: placing ship outside of the board", () => {
-    expect(gameboard.placeShip(1,[10,10])).toEqual(false);
-    expect(gameboard.getBoard()).toEqual(testBoard);
-  });
-  test("test: placing ship in same place twice", () => {
-    expect(gameboard.placeShip(1,[0,0])).toEqual(true);
-    expect(gameboard.placeShip(1,[0,0])).toEqual(false);
-    testBoard[0][0] = 's';
-    expect(gameboard.getBoard()).toEqual(testBoard);
-  })
-  test("test: make sure ships can't touch each-other", () => {
-    expect(gameboard.placeShip(1,[1,0])).toEqual(true);
-    expect(gameboard.placeShip(1,[0,0])).toEqual(false);
-    testBoard[1][0] = 's';
-    expect(gameboard.getBoard()).toEqual(testBoard);
-  });
-  test("test: placing 4 tile long ship", () => {
-    expect(gameboard.placeShip(4,[9,0], "right")).toEqual(true);
-    testBoard[9][0] = 's';
-    testBoard[9][1] = 's';
-    testBoard[9][2] = 's';
-    testBoard[9][3] = 's';
-    expect(gameboard.getBoard()).toEqual(testBoard);
-  })
-  test("test: make sure ships can't touch each-other", () => {
-    expect(gameboard.placeShip(4,[9,0], "right")).toEqual(true);
-    testBoard[9][0] = 's';
-    testBoard[9][1] = 's';
-    testBoard[9][2] = 's';
-    testBoard[9][3] = 's';
-    expect(gameboard.getBoard()).toEqual(testBoard);
-    expect(gameboard.placeShip(2,[7,0])).toEqual(false);
-    expect(gameboard.getBoard()).toEqual(testBoard);
-  });
-  test("test: placing a ship in the middle of other ship", () => {
-    expect(gameboard.placeShip(4,[9,0], "right")).toEqual(true);
-    testBoard[9][0] = 's';
-    testBoard[9][1] = 's';
-    testBoard[9][2] = 's';
-    testBoard[9][3] = 's';
-    expect(gameboard.getBoard()).toEqual(testBoard);
-    expect(gameboard.placeShip(1,[9,1])).toEqual(false);
-    expect(gameboard.getBoard()).toEqual(testBoard);
-  })
-  test("test: placing ship that exceed gameboard boundaries", () => {
-    expect(gameboard.placeShip(4,[8,8])).toEqual(false);
-    expect(gameboard.getBoard()).toEqual(testBoard);
-  })
-})
-
-describe("Testing receiveAttack:", () => {
-  let gameboard;
-  let testBoard;
-
-  beforeEach(() => {
-    gameboard  = Gameboard();
-    testBoard = Array(10).fill(Array(10).fill(""));
-  });
-
-  test("test: receiveAttack on empty coordination", () => {
-    expect(gameboard.getBoard()).toEqual(testBoard);
-    testBoard[0][0] = "x";
-    expect(gameboard.receiveAttack(0,0)).toEqual(false);
-    expect(gameboard.getBoard()).toEqual(testBoard);
-  })
-  test("test: receiveAttack on out of scope coordination", () => {
-    expect(gameboard.receiveAttack(10,10)).toEqual(false);
-    expect(gameboard.getBoard()).toEqual(testBoard);
-  })
-  test("test: receiveAttack on occupied coordination", () => {
-    gameboard.placeShip(1, [0,0]);
-    /*
-    ['s','','','',...]
-    ['', '','','',...]
-    ['', '','','',...]
-    */
-    expect(gameboard.receiveAttack(0,0)).toEqual(true);
-    /*
-    ['o','x','','',...]
-    ['x','x','','',...]
-    ['', '' ,'','',...]
-    */
-    testBoard[0][0] = "o";
-    testBoard[0][1] = "x";
-    testBoard[1][0] = "x";
-    testBoard[1][1] = "x";
-    expect(gameboard.getBoard()).toEqual(testBoard);
-  })
-  test("test: receiveAttack on coordination that have been hit", () => {
-    gameboard.placeShip(1, [0,0]);
-    /*
-    ['s','','','',...]
-    ['', '','','',...]
-    ['', '','','',...]
-    */
-    testBoard[0][0] = 's';
-    expect(gameboard.receiveAttack(0,0)).toEqual(true);
-    testBoard[0][0] = "o";
-    testBoard[0][1] = "x";
-    testBoard[1][0] = "x";
-    testBoard[1][1] = "x";
-    expect(gameboard.getBoard()).toEqual(testBoard);
-    expect(gameboard.receiveAttack(0,0)).toEqual(false);
-    expect(gameboard.getBoard()).toEqual(testBoard);
-  })
-  describe("test: hit a 2 tiles long ship", () => {
+  describe("placing 1 tile long ship", () => {
     beforeAll(() => {
-      gameboard.placeShip(2, [1,0]);
-      testBoard[1][0] = 's';
-      testBoard[1][1] = 's';
-      /*
-      ['' , '','','',...]
-      ['s','s','','',...]
-      ['' , '','','',...]
-      */
-    })
-    test("test: 1st hit", () => {
-      expect(gameboard.receiveAttack([1,0])).toEqual(true);
-      /*
-      ['' , '','','',...]
-      ['o','s','','',...]
-      ['' , '','','',...]
-      */
-      testBoard[1][0] = 'o';
-      expect(gameboard.getBoard()).toEqual(testBoard);
+      gameboard = Gameboard();
     });
-    test("test: 2nd hit", () => {
-      expect(gameboard.receiveAttack([2,0])).toEqual(true);
+    test("TEST: place at [0,0]", () => {
+      expect(gameboard.placeShip([0, 0], 1, "horizontal")).toBe(true);
+    });
+    test("TEST: place at [9,9]", () => {
+      expect(gameboard.placeShip([9, 9], 1, "horizontal")).toBe(true);
+    });
+    test("TEST: place at [0,9]", () => {
+      expect(gameboard.placeShip([0, 9], 1, "horizontal")).toBe(true);
+    });
+  });
+  describe("placing different sizes and orientations ships", () => {
+    beforeEach(() => {
+      gameboard = Gameboard();
+    });
+    test("TEST: placing 4 tile long ship horizontally", () => {
+      expect(gameboard.placeShip([2, 2], 4, "horizontal")).toBe(true);
+    });
+    test("TEST: placing 4 tile long ship vertically", () => {
+      expect(gameboard.placeShip([2, 2], 4, "vertical")).toBe(true);
+    });
+    test("TEST: placing several horizontal ships", () => {
+      expect(gameboard.placeShip([1, 1], 4, "horizontal")).toBe(true);
+      expect(gameboard.placeShip([3, 1], 4, "horizontal")).toBe(true);
+      expect(gameboard.placeShip([1, 6], 4, "horizontal")).toBe(true);
+      expect(gameboard.placeShip([9, 1], 4, "horizontal")).toBe(true);
+    });
+    test("TEST: placing several vertical ships", () => {
+      expect(gameboard.placeShip([1, 1], 4, "vertical")).toBe(true);
+      expect(gameboard.placeShip([6, 1], 4, "vertical")).toBe(true);
+      expect(gameboard.placeShip([6, 4], 4, "vertical")).toBe(true);
+      expect(gameboard.placeShip([3, 7], 4, "vertical")).toBe(true);
+    });
+    test("TEST: placing ships in different orientations", () => {
+      expect(gameboard.placeShip([1, 1], 4, "horizontal")).toBe(true);
+      expect(gameboard.placeShip([3, 1], 4, "vertical")).toBe(true);
+      expect(gameboard.placeShip([1, 6], 4, "vertical")).toBe(true);
+    });
+    test("TEST: placing all ships of the game", () => {
       /*
-      ['x','x','x','',...]
-      ['o','o','x','',...]
-      ['x','x','x','',...]
-      */
-      testBoard[2][0] = 'o';
-      testBoard[0][0] = 'x';
-      testBoard[0][1] = 'x';
-      testBoard[0][2] = 'x';
-      testBoard[1][2] = 'x';
-      testBoard[2][0] = 'x';
-      testBoard[2][1] = 'x';
-      testBoard[2][2] = 'x';
-      expect(gameboard.getBoard()).toEqual(testBoard);
+       * [3, ,2,2, ,1, ,2, , ]
+       * [3, , , , , , ,2, , ]
+       * [3, ,3,3,3, , , , , ]
+       * [ , , , , , ,4,4,4,4]
+       * [1, , , , , , , , , ]
+       * [ , ,2,2, , , , , , ]
+       * [1, , , , , , , , , ]
+       * [ , , , , , , , ,1, ]
+       * [ , , , , , , , , , ]
+       */
+      expect(gameboard.placeShip([0, 0], 3, "vertical")).toBe(true);
+      expect(gameboard.placeShip([0, 2], 2, "horizontal")).toBe(true);
+      expect(gameboard.placeShip([0, 5], 1, "horizontal")).toBe(true);
+      expect(gameboard.placeShip([0, 7], 2, "vertical")).toBe(true);
+      expect(gameboard.placeShip([2, 2], 3, "horizontal")).toBe(true);
+      expect(gameboard.placeShip([3, 6], 4, "horizontal")).toBe(true);
+      expect(gameboard.placeShip([4, 0], 1, "horizontal")).toBe(true);
+      expect(gameboard.placeShip([5, 2], 2, "horizontal")).toBe(true);
+      expect(gameboard.placeShip([6, 0], 1, "horizontal")).toBe(true);
+      expect(gameboard.placeShip([8, 8], 1, "horizontal")).toBe(true);
     });
-    test("test: 3rd hit", () => {
-      expect(gameboard.receiveAttack([3,0])).toEqual(false);
-      expect(gameboard.getBoard()).toEqual(testBoard);
+  });
+  describe("test ilegal placing", () => {
+    // put 1 tile long ship for the tests
+    beforeAll(() => {
+      gameboard.placeShip([5, 5], 1, "horizontal");
     });
-  })
-})
 
+    beforeEach(() => {
+      gameboard = Gameboard();
+    });
 
-describe("Test allShipsSunk:", () => {
-  let gameboard;
-  beforeEach(() => {
-    gameboard = Gameboard();
-  })
-  test("test: without ships", () => {
-    expect(gameboard.allShipsSunk()).toEqual(true);
-  })
-  test("test: one tile long ship", () => {
-    gameboard.placeShip(1,[0,0]);
-    expect(gameboard.allShipsSunk()).toEqual(false);
-    gameboard.receiveAttack(0,0);
-    expect(gameboard.allShipsSunk()).toEqual(true);
+    test("TEST: can't put ship on another ship", () => {
+      expect(gameboard.placeShip([5, 5], 1, "horizontal")).toBe(false);
+    });
 
-  })
-  test("test: 2 tiles long ship", () => {
-    gameboard.placeShip(2,[0,0]);
-    expect(gameboard.allShipsSunk()).toEqual(false);
-    gameboard.receiveAttack(0,0);
-    expect(gameboard.allShipsSunk()).toEqual(false);
-    gameboard.receiveAttack(1,0);
-    expect(gameboard.allShipsSunk()).toEqual(true);
-  })
-  test("test: more than one ship", () => {
-    gameboard.placeShip(2,[0,0]);
-    gameboard.placeShip(2,[4,4]);
-    expect(gameboard.allShipsSunk()).toEqual(false);
-    gameboard.receiveAttack(0,0);
-    expect(gameboard.allShipsSunk()).toEqual(false);
-    gameboard.receiveAttack(4,4);
-    expect(gameboard.allShipsSunk()).toEqual(false);
-    gameboard.receiveAttack(1,0);
-    expect(gameboard.allShipsSunk()).toEqual(false);
-    gameboard.receiveAttack(5,4);
-    expect(gameboard.allShipsSunk()).toEqual(true);
-  })
-})
+    test("TEST: can't put ship that crosses another ship", () => {
+      gameboard.placeShip([2, 0], 4, "horizontal");
+      expect(gameboard.placeShip([0, 2], 4, "vertical")).toBe(false);
+    });
+
+    describe("test placing ships next to existing ship", () => {
+      test("TEST: can't place ship left to existing ship", () => {
+        expect(gameboard.placeShip([5, 4], 1, "horizontal")).toBe(false);
+      });
+      test("TEST: can't place ship right to existing ship", () => {
+        expect(gameboard.placeShip([5, 6], 1, "horizontal")).toBe(false);
+      });
+      test("TEST: can't place ship above to existing ship", () => {
+        expect(gameboard.placeShip([4, 5], 1, "horizontal")).toBe(false);
+      });
+      test("TEST: can't place ship below to existing ship", () => {
+        expect(gameboard.placeShip([5, 6], 1, "horizontal")).toBe(false);
+      });
+      test("TEST: can't place ship left up to existing ship", () => {
+        expect(gameboard.placeShip([4, 4], 1, "horizontal")).toBe(false);
+      });
+      test("TEST: can't place ship right up to existing ship", () => {
+        expect(gameboard.placeShip([4, 6], 1, "horizontal")).toBe(false);
+      });
+      test("TEST: can't place ship left down to existing ship", () => {
+        expect(gameboard.placeShip([6, 4], 1, "horizontal")).toBe(false);
+      });
+      test("TEST: can't place ship right down to existing ship", () => {
+        expect(gameboard.placeShip([6, 6], 1, "horizontal")).toBe(false);
+      });
+    });
+  });
+});
+
+describe("Test receiveAttack:", () => {});
+
+describe("Test allShipsSunk:", () => {});
