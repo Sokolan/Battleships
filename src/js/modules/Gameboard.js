@@ -1,6 +1,6 @@
 const Gameboard = () => {
-  const mShipsBoard = Array(10).fill(Array(10).fill(null));
-  const mHitsBoard = Array(10).fill(Array(10).fill(""));
+  const mShipsBoard = Array(10).fill(null).map(() => Array(10).fill(null));
+  const mHitsBoard = Array(10).fill(null).map(() => Array(10).fill(""));
 
   /* returns a board with:
    * "o" - for tile that had ship which was hit

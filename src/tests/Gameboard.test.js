@@ -132,7 +132,7 @@ describe("Test receiveAttack:", () => {
     beforeAll(() => {
       gameboard = Gameboard();
       gameboard.placeShip([0,0], 1, "horizontal");
-      testBoard = Array(10).fill(Array(10).fill(""));
+      testBoard = Array(10).fill(null).map(() => Array(10).fill(""));
     });
     test("TEST: hitting ship at [1,1]", () => {
       expect(gameboard.getHitsBoard()).not.toContain("o");
@@ -156,11 +156,11 @@ describe("Test receiveAttack:", () => {
       expect(gameboard.getHitsBoard()).toEqual(testBoard);
 
     });
-  })
+  });
   describe("test for errors", () => {
     beforeEach(() => {
       gameboard = Gameboard();
-      testBoard = Array(10).fill(Array(10).fill(""));
+      testBoard = Array(10).fill(null).map(() => Array(10).fill(""));
     });
     test("TEST: hitting outside of the board", () => {
       expect(gameboard.recieveAttack([10,4])).toBe(false);
@@ -173,6 +173,12 @@ describe("Test receiveAttack:", () => {
       expect(gameboard.recieveAttack([0,0])).toBe(false);
     });
 
+  });
+  describe("test with more ships", () => {
+    beforeEach(() => {
+      gameboard = Gameboard();
+      testBoard = Array(10).fill(null).map(() => Array(10).fill(""));
+    })
   })
 });
 
