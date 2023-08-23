@@ -365,4 +365,45 @@ describe("Test receiveAttack:", () => {
   });
 });
 
-describe("Test allShipsSunk:", () => {});
+describe("Test allShipsSunk:", () => {
+  let gameboard;
+  
+  beforeEach(() => {
+    gameboard = Gameboard();
+  });
+
+  test("TEST: all ships sank without ships", () => {
+    expect(gameboard.allShipsSunk()).toBe(true);
+  })
+  test("TEST: sink one ship 1 tile long", () => {
+    gameboard.placeShip([0,0], 1, "horizontal");
+    expect(gameboard.allShipsSunk()).toBe(false);
+    gameboard.recieveAttack([0,0]);
+    expect(gameboard.allShipsSunk()).toBe(true);
+  })
+  test("TEST: test with 2 ships 1 tile long", () => {
+    expect(gameboard.allShipsSunk()).toBe(true);
+    gameboard.placeShip([0,0], 1, "vertical");
+    expect(gameboard.allShipsSunk()).toBe(false);
+    gameboard.placeShip([4,4], 1, "vertical");
+    expect(gameboard.allShipsSunk()).toBe(false);
+    gameboard.recieveAttack([0,0]);
+    expect(gameboard.allShipsSunk()).toBe(false);
+    gameboard.recieveAttack([4,4]);
+    expect(gameboard.allShipsSunk()).toBe(true);
+  });
+  test("TEST: test with 1 ship 4 tiles long", () => {
+    gameboard.placeShip([1,1], 4, "horizontal");
+    expect(gameboard.allShipsSunk()).toBe(false);
+    gameboard.recieveAttack([1,1]);
+    expect(gameboard.allShipsSunk()).toBe(false);
+    gameboard.recieveAttack([1,2]);
+    expect(gameboard.allShipsSunk()).toBe(false);
+    gameboard.recieveAttack([1,3]);
+    expect(gameboard.allShipsSunk()).toBe(false);
+    gameboard.recieveAttack([1,0]);
+    expect(gameboard.allShipsSunk()).toBe(false);
+    gameboard.recieveAttack([1,4]);
+    expect(gameboard.allShipsSunk()).toBe(true);
+  })
+});
