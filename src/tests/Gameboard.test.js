@@ -1,3 +1,4 @@
+import { experiments } from "webpack";
 import Gameboard from "../js/modules/Gameboard";
 
 describe("Test placing ships", () => {
@@ -163,14 +164,14 @@ describe("Test receiveAttack:", () => {
       testBoard = Array(10).fill(null).map(() => Array(10).fill(""));
     });
     test("TEST: hitting outside of the board", () => {
-      expect(gameboard.recieveAttack([10,4])).toBe(false);
-      expect(gameboard.recieveAttack([0,10])).toBe(false);
-      expect(gameboard.recieveAttack([10,10])).toBe(false);
+      expect(gameboard.recieveAttack([10,4])).toEqual("ERROR");
+      expect(gameboard.recieveAttack([0,10])).toEqual("ERROR");
+      expect(gameboard.recieveAttack([10,10])).toEqual("ERROR");
     });
     test("TEST: hitting same target twice", () => {
       gameboard.placeShip([0,0], 1, "horizontal");
-      expect(gameboard.recieveAttack([0,0])).toBe(true);
-      expect(gameboard.recieveAttack([0,0])).toBe(false);
+      expect(gameboard.recieveAttack([0,0])).toEqual("hit");
+      expect(gameboard.recieveAttack([0,0])).toEqual("ERROR");
     });
 
   });
@@ -178,7 +179,12 @@ describe("Test receiveAttack:", () => {
     beforeEach(() => {
       gameboard = Gameboard();
       testBoard = Array(10).fill(null).map(() => Array(10).fill(""));
-    })
+    });
+    test("TEST: hitting 3 tiles long ship", () => {
+      gameboard.placeShip([2,2], 3, "vertical");
+      expect(gameboard.getHitsBoard()).toEqual(testBoard);
+      expect(gameboard.recieveAttack([9,9])).toEqual("miss")
+    });
   })
 });
 
