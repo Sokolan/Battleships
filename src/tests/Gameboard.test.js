@@ -1,4 +1,3 @@
-import { experiments } from "webpack";
 import Gameboard from "../js/modules/Gameboard";
 
 describe("Test placing ships", () => {
@@ -80,12 +79,12 @@ describe("Test placing ships", () => {
     });
 
     test("TEST: placing ships outside of board", () => {
-      expect(gameboard.placeShip([10,8], 1, "vertical")).toBe(false);
+      expect(gameboard.placeShip([10, 8], 1, "vertical")).toBe(false);
     });
 
     test("TEST: wrong orientation", () => {
-      expect(gameboard.placeShip([0,0], 1, "wrong")).toBe(false);
-    })
+      expect(gameboard.placeShip([0, 0], 1, "wrong")).toBe(false);
+    });
 
     test("TEST: can't put ship on another ship", () => {
       expect(gameboard.placeShip([5, 5], 1, "horizontal")).toBe(false);
@@ -132,18 +131,20 @@ describe("Test receiveAttack:", () => {
   describe("test basic functionality", () => {
     beforeAll(() => {
       gameboard = Gameboard();
-      gameboard.placeShip([0,0], 1, "horizontal");
-      testBoard = Array(10).fill(null).map(() => Array(10).fill(""));
+      gameboard.placeShip([0, 0], 1, "horizontal");
+      testBoard = Array(10)
+        .fill(null)
+        .map(() => Array(10).fill(""));
     });
     test("TEST: hitting ship at [1,1]", () => {
       expect(gameboard.getHitsBoard()).not.toContain("o");
       expect(gameboard.getHitsBoard()).not.toContain("x");
 
-      expect(gameboard.recieveAttack([1,0])).toEqual("miss");
+      expect(gameboard.recieveAttack([1, 0])).toEqual("miss");
       testBoard[1][0] = "x";
       expect(gameboard.getHitsBoard()).toEqual(testBoard);
 
-      expect(gameboard.recieveAttack([1,1])).toEqual("hit");
+      expect(gameboard.recieveAttack([1, 1])).toEqual("hit");
       // ships was sank so it should mark the tiles around it too
       testBoard[1][1] = "o";
       testBoard[0][0] = "x";
@@ -155,37 +156,213 @@ describe("Test receiveAttack:", () => {
       testBoard[2][1] = "x";
       testBoard[2][2] = "x";
       expect(gameboard.getHitsBoard()).toEqual(testBoard);
-
     });
   });
   describe("test for errors", () => {
     beforeEach(() => {
       gameboard = Gameboard();
-      testBoard = Array(10).fill(null).map(() => Array(10).fill(""));
+      testBoard = Array(10)
+        .fill(null)
+        .map(() => Array(10).fill(""));
     });
     test("TEST: hitting outside of the board", () => {
-      expect(gameboard.recieveAttack([10,4])).toEqual("ERROR");
-      expect(gameboard.recieveAttack([0,10])).toEqual("ERROR");
-      expect(gameboard.recieveAttack([10,10])).toEqual("ERROR");
+      expect(gameboard.recieveAttack([10, 4])).toEqual("ERROR");
+      expect(gameboard.recieveAttack([0, 10])).toEqual("ERROR");
+      expect(gameboard.recieveAttack([10, 10])).toEqual("ERROR");
     });
     test("TEST: hitting same target twice", () => {
-      gameboard.placeShip([0,0], 1, "horizontal");
-      expect(gameboard.recieveAttack([0,0])).toEqual("hit");
-      expect(gameboard.recieveAttack([0,0])).toEqual("ERROR");
+      gameboard.placeShip([0, 0], 1, "horizontal");
+      expect(gameboard.recieveAttack([0, 0])).toEqual("hit");
+      expect(gameboard.recieveAttack([0, 0])).toEqual("ERROR");
     });
-
+    test("TEST: hitting same tile twice", () => {
+      expect(gameboard.recieveAttack([0, 0])).toEqual("miss");
+      expect(gameboard.recieveAttack([0, 0])).toEqual("ERROR");
+    });
   });
-  describe("test with more ships", () => {
-    beforeEach(() => {
+  describe("general test with more than one ship", () => {
+    beforeAll(() => {
       gameboard = Gameboard();
-      testBoard = Array(10).fill(null).map(() => Array(10).fill(""));
+      testBoard = Array(10)
+        .fill(null)
+        .map(() => Array(10).fill(""));
+      gameboard.placeShip([2, 2], 3, "vertical");
+      gameboard.placeShip([0, 8], 2, "horizontal");
     });
     test("TEST: hitting 3 tiles long ship", () => {
-      gameboard.placeShip([2,2], 3, "vertical");
       expect(gameboard.getHitsBoard()).toEqual(testBoard);
-      expect(gameboard.recieveAttack([9,9])).toEqual("miss")
+      /*
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       */
+      expect(gameboard.recieveAttack([9, 9])).toEqual("miss");
+      testBoard[9][9] = "x";
+      /*
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , ,x]
+       */
+      expect(gameboard.getHitsBoard()).toEqual(testBoard);
+
+      expect(gameboard.recieveAttack([3, 2])).toEqual("hit");
+      testBoard[3][2] = "o";
+      /*
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , ,o, , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , ,x]
+       */
+      expect(gameboard.getHitsBoard()).toEqual(testBoard);
+
+      expect(gameboard.recieveAttack([5, 5])).toEqual("miss");
+      testBoard[5][5] = "x";
+      /*
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , ,o, , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , ,x, , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , ,x]
+       */
+      expect(gameboard.getHitsBoard()).toEqual(testBoard);
+
+      expect(gameboard.recieveAttack([4, 2])).toEqual("hit");
+      testBoard[4][2] = "o";
+      /*
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , ,o, , , , , , , ]
+       * [ , ,o, , , , , , , ]
+       * [ , , , , ,x, , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , ,x]
+       */
+      expect(gameboard.getHitsBoard()).toEqual(testBoard);
+
+      expect(gameboard.recieveAttack([1, 2])).toEqual("miss");
+      testBoard[1][2] = "x";
+      /*
+       * [ , , , , , , , , , ]
+       * [ , ,x, , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , ,o, , , , , , , ]
+       * [ , ,o, , , , , , , ]
+       * [ , , , , ,x, , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , ,x]
+       */
+      expect(gameboard.getHitsBoard()).toEqual(testBoard);
+
+      expect(gameboard.recieveAttack([2, 2])).toEqual("hit");
+      testBoard[2][2] = "o";
+      testBoard[1][1] = "x";
+      testBoard[1][3] = "x";
+      testBoard[2][1] = "x";
+      testBoard[2][3] = "x";
+      testBoard[3][1] = "x";
+      testBoard[3][3] = "x";
+      testBoard[4][1] = "x";
+      testBoard[4][3] = "x";
+      testBoard[5][1] = "x";
+      testBoard[5][2] = "x";
+      testBoard[5][3] = "x";
+      /*
+       * [ , , , , , , , , , ]
+       * [ ,x,x,x, , , , , , ]
+       * [ ,x,o,x, , , , , , ]
+       * [ ,x,o,x, , , , , , ]
+       * [ ,x,o,x, , , , , , ]
+       * [ ,x,x,X, ,x, , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , ,x]
+       */
+      expect(gameboard.getHitsBoard()).toEqual(testBoard);
+
+      expect(gameboard.recieveAttack([8, 2])).toEqual("miss");
+      testBoard[8][2] = "x";
+      /*
+       * [ , , , , , , , , , ]
+       * [ ,x,x,x, , , , , , ]
+       * [ ,x,o,x, , , , , , ]
+       * [ ,x,o,x, , , , , , ]
+       * [ ,x,o,x, , , , , , ]
+       * [ ,x,x,X, ,x, , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , ,x, , , , , , , ]
+       * [ , , , , , , , , ,x]
+       */
+      expect(gameboard.getHitsBoard()).toEqual(testBoard);
+
+      expect(gameboard.recieveAttack([0, 8])).toEqual("hit");
+      /*
+       * [ , , , , , , , ,o, ]
+       * [ ,x,x,x, , , , , , ]
+       * [ ,x,o,x, , , , , , ]
+       * [ ,x,o,x, , , , , , ]
+       * [ ,x,o,x, , , , , , ]
+       * [ ,x,x,X, ,x, , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , ,x, , , , , , , ]
+       * [ , , , , , , , , ,x]
+       */
+      testBoard[0][8] = "o";
+      expect(gameboard.getHitsBoard()).toEqual(testBoard);
+
+      expect(gameboard.recieveAttack([0, 9])).toEqual("hit");
+      /*
+       * [ , , , , , , ,x,o,0]
+       * [ ,x,x,x, , , ,x,x,x]
+       * [ ,x,o,x, , , , , , ]
+       * [ ,x,o,x, , , , , , ]
+       * [ ,x,o,x, , , , , , ]
+       * [ ,x,x,X, ,x, , , , ]
+       * [ , , , , , , , , , ]
+       * [ , , , , , , , , , ]
+       * [ , ,x, , , , , , , ]
+       * [ , , , , , , , , ,x]
+       */
+      testBoard[0][9] = "o";
+      testBoard[0][7] = "x";
+      testBoard[1][9] = "x";
+      testBoard[1][8] = "x";
+      testBoard[1][7] = "x";
+      expect(gameboard.getHitsBoard()).toEqual(testBoard);
     });
-  })
+  });
 });
 
 describe("Test allShipsSunk:", () => {});
