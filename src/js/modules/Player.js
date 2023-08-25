@@ -4,12 +4,14 @@ const Player = (type) => {
   const mType = type;
   const mGameboard = Gameboard();
 
-  const getType = () => {};
+  const getType = () => mType;
 
-  const getBoard = () => {};
+  const getBoard = () => mGameboard;
 
   return {
     getType,
     getBoard,
   };
 };
+
+export default Player;
