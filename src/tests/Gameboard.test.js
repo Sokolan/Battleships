@@ -1,6 +1,6 @@
 import Gameboard from "../js/modules/Gameboard";
 
-describe.skip("Test placing ships", () => {
+describe("Test placing ships", () => {
   let gameboard;
 
   describe("placing 1 tile long ship", () => {
@@ -361,7 +361,7 @@ describe("Test receiveAttack:", () => {
   });
 });
 
-describe.skip("Test allShipsSunk:", () => {
+describe("Test allShipsSunk:", () => {
   let gameboard;
   
   beforeEach(() => {
@@ -371,6 +371,7 @@ describe.skip("Test allShipsSunk:", () => {
   test("TEST: all ships sank without ships", () => {
     expect(gameboard.allShipsSunk()).toBe(true);
   })
+
   test("TEST: sink one ship 1 tile long", () => {
     gameboard.placeShip([0,0], 1, "horizontal");
     expect(gameboard.allShipsSunk()).toBe(false);
