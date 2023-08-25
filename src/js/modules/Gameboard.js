@@ -9,6 +9,18 @@ const Gameboard = () => {
     .fill(null)
     .map(() => Array(mBoardSize).fill(""));
 
+  const mCoordinateValid = (coordinate) => {
+    if (
+      coordinate[0] < 0 ||
+      coordinate[1] < 0 ||
+      coordinate[0] >= mBoardSize ||
+      coordinate[1] >= mBoardSize
+    ) {
+      return false;
+    }
+    return true;
+  };
+
   /* returns a board with:
    * "o" - for tile that had ship which was hit
    * "x" - for tile that was hit and it has no ship
@@ -21,7 +33,7 @@ const Gameboard = () => {
     const fromY = coordination[1] - 1;
     const toX = orientation === "vertical" ? fromX + length + 1 : fromX + 2;
     const toY = orientation === "horizontal" ? fromY + length + 1 : fromY + 2;
-    
+
     for (let x = fromX; x <= toX; x += 1) {
       for (let y = fromY; y <= toY; y += 1) {
         if (
@@ -30,7 +42,7 @@ const Gameboard = () => {
           x < mBoardSize &&
           y < mBoardSize &&
           mShipsBoard[x][y] !== null
-          ) {
+        ) {
           return false;
         }
       }
@@ -45,12 +57,7 @@ const Gameboard = () => {
       return false;
     }
     // Check if coordination is in boundaries of the board
-    if (
-      startCoordination[0] < 0 ||
-      startCoordination[0] >= mBoardSize ||
-      startCoordination[1] < 0 ||
-      startCoordination[1] >= mBoardSize
-    ) {
+    if (!mCoordinateValid(startCoordination)) {
       return false;
     }
     // Check if orientations is correct
