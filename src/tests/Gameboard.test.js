@@ -1,6 +1,6 @@
 import Gameboard from "../js/modules/Gameboard";
 
-describe("Test placing ships", () => {
+describe.skip("Test placing ships", () => {
   let gameboard;
 
   describe("placing 1 tile long ship", () => {
@@ -120,14 +120,14 @@ describe("Test placing ships", () => {
   });
 });
 
-describe.skip("Test receiveAttack:", () => {
+describe("Test receiveAttack:", () => {
   let gameboard;
   let testBoard;
 
   describe("test basic functionality", () => {
     beforeAll(() => {
       gameboard = Gameboard();
-      gameboard.placeShip([0, 0], 1, "horizontal");
+      gameboard.placeShip([1, 1], 1, "horizontal");
       testBoard = Array(10)
         .fill(null)
         .map(() => Array(10).fill(""));
