@@ -54,20 +54,18 @@ const Gameboard = () => {
       (mCoordinateValid([x, y - 1]) && mHitsBoard[x][y - 1] === "o")
     ) {
       orientation = "horizontal";
-    }
-    else {
+    } else {
       orientation = "vertical";
     }
-    
+
     while (mCoordinateValid([x, y]) && mHitsBoard[x][y] === "o") {
       if (orientation === "horizontal") {
         y -= 1;
-      }
-      else {
+      } else {
         x -= 1;
       }
     }
-    if (orientation === "horizontal"){
+    if (orientation === "horizontal") {
       while (
         (mCoordinateValid([x, y]) && mHitsBoard[x][y] === "o") ||
         (mCoordinateValid([x, y - 1]) && mHitsBoard[x][y - 1] === "o") ||
@@ -75,14 +73,13 @@ const Gameboard = () => {
       ) {
         for (let i = -1; i <= 1; i += 1) {
           // Mark above and below, and if it's not ship tile then the outer wall too
-          if(mCoordinateValid([x + i, y]) && mHitsBoard[x + i][y] !== "o") {
+          if (mCoordinateValid([x + i, y]) && mHitsBoard[x + i][y] !== "o") {
             mHitsBoard[x + i][y] = "x";
           }
         }
         y += 1;
       }
-    }
-    else {
+    } else {
       while (
         (mCoordinateValid([x, y]) && mHitsBoard[x][y] === "o") ||
         (mCoordinateValid([x - 1, y]) && mHitsBoard[x - 1][y] === "o") ||
@@ -90,13 +87,13 @@ const Gameboard = () => {
       ) {
         for (let i = -1; i <= 1; i += 1) {
           // Mark above and below, and if it's not ship tile then the outer wall too
-          if(mCoordinateValid([x, y + i]) && mHitsBoard[x][y + i] !== "o") {
+          if (mCoordinateValid([x, y + i]) && mHitsBoard[x][y + i] !== "o") {
             mHitsBoard[x][y + i] = "x";
           }
         }
         x += 1;
       }
-    }    
+    }
   };
 
   /* returns a board with:
@@ -146,7 +143,6 @@ const Gameboard = () => {
    *   "ERROR" - if the coordination is ilegal (out of scope, coordination already been hit)
    */
   const recieveAttack = (coordination) => {
-    
     if (!mCoordinateValid(coordination)) {
       return "ERROR";
     }
@@ -161,7 +157,7 @@ const Gameboard = () => {
       mHitsBoard[x][y] = "x";
       return "miss";
     }
-    
+
     // else we have a ship at [x][y] and that spot wasn't hit yet
     mHitsBoard[x][y] = "o";
     mShipsBoard[x][y].hit();
@@ -174,7 +170,9 @@ const Gameboard = () => {
   };
 
   // returns boolean with answer
-  const allShipsSunk = () => {};
+  const allShipsSunk = () =>
+    // Either it's non occupied square eighter the ship is sank
+    mShipsBoard.every((row) => row.every((cell) => cell === null || cell.isSunk()));
 
   return {
     getHitsBoard,
