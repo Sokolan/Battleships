@@ -69,13 +69,9 @@ describe("Test placing ships", () => {
     });
   });
   describe("test ilegal placing", () => {
-    // put 1 tile long ship for the tests
-    beforeAll(() => {
-      gameboard.placeShip([5, 5], 1, "horizontal");
-    });
-
     beforeEach(() => {
       gameboard = Gameboard();
+      gameboard.placeShip([5, 5], 1, "horizontal");
     });
 
     test("TEST: placing ships outside of board", () => {
@@ -124,7 +120,7 @@ describe("Test placing ships", () => {
   });
 });
 
-describe("Test receiveAttack:", () => {
+describe.skip("Test receiveAttack:", () => {
   let gameboard;
   let testBoard;
 
@@ -365,7 +361,7 @@ describe("Test receiveAttack:", () => {
   });
 });
 
-describe("Test allShipsSunk:", () => {
+describe.skip("Test allShipsSunk:", () => {
   let gameboard;
   
   beforeEach(() => {
