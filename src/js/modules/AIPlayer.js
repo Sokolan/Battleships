@@ -8,9 +8,10 @@ const AIPlayer = () => {
     const board = enemyBoard.getHitsBoard();
     let legalMoveFound = false;
     let result;
+    const boardSize = enemyBoard.getBoardSize();
     while (!legalMoveFound) {
-      const x = Math.floor(Math.random() * 10);
-      const y = Math.floor(Math.random() * 10); 
+      const x = Math.floor(Math.random() * boardSize);
+      const y = Math.floor(Math.random() * boardSize); 
       if (board[x][y] === "") {
         legalMoveFound = true;
         result = enemyBoard.recieveAttack([x, y]);
@@ -20,7 +21,20 @@ const AIPlayer = () => {
   };
 
   // Enemy board should have placeShip
-  player.placeShips = (gameboard) => {};
+  /* default board:
+  *  [3, ,2,2, ,1, ,2, , ]
+  *  [3, , , , , , ,2, , ]
+  *  [3, ,3,3,3, , , , , ]
+  *  [ , , , , , ,4,4,4,4]
+  *  [1, , , , , , , , , ]
+  *  [ , ,2,2, , , , , , ]
+  *  [1, , , , , , , , , ]
+  *  [ , , , , , , , , , ]
+  *  [ , , , , , , , ,1, ]
+  *  [ , , , , , , , , , ]
+  */
+
+  player.placeShips = (gameboard, defaultArrangement = true) => {};
 
   return player;
 };
