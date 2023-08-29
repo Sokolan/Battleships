@@ -104,7 +104,7 @@ const Gameboard = () => {
   const getHitsBoard = () => [...mHitsBoard];
 
   // returns boolean value depends on the success of the placing the ship
-  const placeShip = (startCoordination, length, orientation) => {
+  const placeShip = (startCoordination, length, orientation = "horizontal") => {
     // Can't have negative size ship
     if (length <= 0) {
       return false;
