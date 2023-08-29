@@ -2,13 +2,11 @@ import AIPlayer from "../js/modules/AIPlayer";
 import Gameboard from "../js/modules/Gameboard";
 
 const mockGameboard = () => {
-  let mLastHit;
   let mHitsBoard;
   let mBoardSize;
   const setBoardSize = (size) => {mBoardSize = size;};
   const getBoardSize = () => mBoardSize;
   const recieveAttack = jest.fn((coordinates) => {});
-  const getLastHit = () => mLastHit;
 
   const getHitsBoard = jest.fn(() => mHitsBoard);
   const setHitsBoard = (board) => {
@@ -18,7 +16,6 @@ const mockGameboard = () => {
 
   return {
     recieveAttack,
-    getLastHit,
     getHitsBoard,
     setHitsBoard,
     getBoardSize,
@@ -35,7 +32,7 @@ describe("test creation of AIPlayer", () => {
   });
 });
 
-describe.only("test makeMove: ", () => {
+describe("test makeMove: ", () => {
   let aiPlayer;
   let gameboard;
   beforeEach(() => {
