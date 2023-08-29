@@ -20,6 +20,7 @@ const mockGameboard = () => {
     setHitsBoard,
     getBoardSize,
     setBoardSize,
+    placeShip,
   };
 };
 
@@ -85,9 +86,7 @@ describe("test placeShips: ", () => {
     gameboard = mockGameboard();
   });
   test("TEST: place ships default", () => {
-    for (let i = 0; i < 10; i += 1) {
-      gameboard.placeShip.mockReturnValueOnce(true);
-    }
+    gameboard.placeShip.mockReturnValue(true);
     aiPlayer.placeShips(gameboard);
     /* default board:
      *     0 1 2 3 4 5 6 7 8 9
@@ -102,7 +101,15 @@ describe("test placeShips: ", () => {
      *  8 [ , , , , , , , ,1, ]
      *  9 [ , , , , , , , , , ]
      */
-    expect(gameboard.mock.calls).toHaveLength(10);
-    expect(gameboard.mock.calls).toContain([[0, 0], 3, "vertical"]);
+    expect(gameboard.placeShip.mock.calls).toHaveLength(10);
+    expect(gameboard.placeShip.mock.calls).toContainEqual([[3, 6], 4, "horizontal"]);
+    expect(gameboard.placeShip.mock.calls).toContainEqual([[0, 0], 3, "vertical"]);
+    expect(gameboard.placeShip.mock.calls).toContainEqual([[2, 2], 3, "horizontal"]);
+    expect(gameboard.placeShip.mock.calls).toContainEqual([[0, 2], 2, "horizontal"]);
+    expect(gameboard.placeShip.mock.calls).toContainEqual([[0, 7], 2, "vertical"]);
+    expect(gameboard.placeShip.mock.calls).toContainEqual([[5, 2], 2, "horizontal"]);
+    expect(gameboard.placeShip.mock.calls).toContainEqual([[0, 5], 1]);
+    expect(gameboard.placeShip.mock.calls).toContainEqual([[4, 0], 1]);
+    expect(gameboard.placeShip.mock.calls).toContainEqual([[6, 0], 1]);
   });
 });
