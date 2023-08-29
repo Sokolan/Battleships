@@ -89,5 +89,6 @@ describe("test placeShips: ", () => {
     expect(gameboard.placeShip.mock.calls).toContainEqual([[0, 5], 1]);
     expect(gameboard.placeShip.mock.calls).toContainEqual([[4, 0], 1]);
     expect(gameboard.placeShip.mock.calls).toContainEqual([[6, 0], 1]);
+    expect(gameboard.placeShip.mock.calls).toContainEqual([[8, 8], 1]);
   });
 });
