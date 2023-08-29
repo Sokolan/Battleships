@@ -9,6 +9,7 @@ const Gameboard = () => {
     .fill(null)
     .map(() => Array(mBoardSize).fill(""));
 
+  const getBoardSize = () => mBoardSize;
   const mCoordinateValid = (coordinate) => {
     if (
       coordinate[0] < 0 ||
@@ -179,6 +180,7 @@ const Gameboard = () => {
     placeShip,
     recieveAttack,
     allShipsSunk,
+    getBoardSize,
   };
 };
 
