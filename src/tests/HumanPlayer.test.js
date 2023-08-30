@@ -11,7 +11,7 @@ describe("test creation of HumanPlayer: ", () => {
   });
 });
 
-describe("test makeMove: ", () => {
+describe("makeMove() : ", () => {
   let gameboard;
   let humanPlayer;
 
@@ -20,25 +20,25 @@ describe("test makeMove: ", () => {
     humanPlayer = HumanPlayer();
   });
 
-  test("TEST: makeMove on [0,0]: ", () => {
-    HumanPlayer.makeMove(gameboard, [0, 0]);
+  test("TEST: makeMove([0,0]) should call recieveAttack([0,0]): ", () => {
+    humanPlayer.makeMove(gameboard, [0, 0]);
     expect(gameboard.recieveAttack.mock.calls[0][0]).toEqual([0, 0]);
   });
-  test("TEST: makeMove on [1,4]", () => {
-    HumanPlayer.makeMove(gameboard, [1, 4]);
+  test("TEST: makeMove([1, 4]) should call recieveAttack([1, 4])", () => {
+    humanPlayer.makeMove(gameboard, [1, 4]);
     expect(gameboard.recieveAttack.mock.calls[0][0]).toEqual([1, 4]);
   });
   test("TEST: makeMove returns hit", () => {
     gameboard.recieveAttack.mockReturnValue("hit");
-    expect(HumanPlayer.makeMove(gameboard, [0, 0])).toEqual("hit");
+    expect(humanPlayer.makeMove(gameboard, [0, 0])).toEqual("hit");
   });
   test("TEST: makeMove returns miss", () => {
     gameboard.recieveAttack.mockReturnValue("miss");
-    expect(HumanPlayer.makeMove(gameboard, [0, 0])).toEqual("miss");
+    expect(humanPlayer.makeMove(gameboard, [0, 0])).toEqual("miss");
   });
   test("TEST: makeMove returns ERROR", () => {
     gameboard.recieveAttack.mockReturnValue("ERROR");
-    expect(HumanPlayer.makeMove(gameboard, [0, 0])).toEqual("ERROR");
+    expect(humanPlayer.makeMove(gameboard, [0, 0])).toEqual("ERROR");
   });
 });
 
