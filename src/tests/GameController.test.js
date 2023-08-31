@@ -26,7 +26,7 @@ describe("GameController() object creation", () => {
 describe("startNewGame() ", () => {
   let gameController;
 
-  beforeAll(() => {
+  beforeEach(() => {
     gameController = GameController();
   });
 
@@ -95,6 +95,29 @@ describe("startNewGame() ", () => {
     const aIPlayer = AIPlayer();
     gameController.startNewGame();
 
-    expect(aIPlayer.placeShips.mock.calls[0]).not.toBe(undefined);
+    expect(aIPlayer.placeShips.mock.calls).toHaveLength(1);
   });
 });
+
+describe("makeMove() ", () => {
+  let gameController;
+  const humanPlayer = HumanPlayer();
+  const aIPlayer = AIPlayer();
+
+  beforeEach(() => {
+    gameController = GameController();
+  });
+
+  test("should trigger HumanPlayer.makeMove() ", () => {
+    expect(gameController.getCurrentPlayer()).toBe("Human");
+    gameController.makeMove([0,0]);
+    expect(humanPlayer.makeMove.mock.calls).toHaveLength(1);
+    expect(humanPlayer.makeMove.mock.calls[0][1]).not.toEqual([0,0]);
+  });
+  test("should trigger AIPlayer.makeMove() ", () => {
+    gameController.makeMove([0, 0]);
+    expect(gameController.getCurrentPlayer()).toEqual("AI");
+    gameController.makeMove();
+    expect(aIPlayer.makeMove.mock.calls[0]).not.toBe(undefined);
+  })
+})
