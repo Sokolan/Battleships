@@ -42,6 +42,7 @@ const HumanPlayer = () => {
     defaultArrangement = true,
   ) => {
     if (defaultArrangement) {
+      console.log(mPlayer.getBoard().placeShip);
       mPlayer.getBoard().placeShip([3, 6], 4, "horizontal");
       mPlayer.getBoard().placeShip([0, 0], 3, "vertical");
       mPlayer.getBoard().placeShip([2, 2], 3, "horizontal");
