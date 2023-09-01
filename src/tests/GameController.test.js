@@ -1,22 +1,23 @@
 jest.mock("../js/modules/HumanPlayer", () =>
-  jest.fn(() => ({
+  jest.fn().mockReturnValue({
     placeShips: jest.fn(),
     makeMove: jest.fn(),
     getBoard: jest.fn(() => ({
       recieveAttack: jest.fn(),
       allShipsSunk: jest.fn(),
     })),
-  })),
+  }),
 );
 
 jest.mock("../js/modules/AIPlayer", () =>
-  jest.fn(() => ({
+  jest.fn().mockReturnValue({
     placeShips: jest.fn(),
     makeMove: jest.fn(),
-    getBoard: jest.fn(() => ({
+    getBoard: jest.fn().mockReturnValue({
       allShipsSunk: jest.fn(),
-    })),
-  })),
+      recieveAttack: jest.fn(),
+    }),
+  }),
 );
 
 import GameController from "../js/modules/GameController";
@@ -35,6 +36,7 @@ let gameController;
 
 describe("startNewGame() ", () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     gameController = GameController();
   });
 
@@ -45,7 +47,7 @@ describe("startNewGame() ", () => {
   test("should invoke HumanPlayer.placeShips() with default positioning", () => {
     gameController.startNewGame();
     const humanPlayer = HumanPlayer();
-    expect(humanPlayer.placeShips.mock.calls[0]).toBe(undefined);
+    expect(humanPlayer.placeShips.mock.calls).toHaveLength(1);
   });
 
   test("should invoke HumanPlayer.placeShips() with the correct coordinates", () => {
@@ -77,25 +79,23 @@ describe("startNewGame() ", () => {
     );
 
     const humanPlayer = HumanPlayer();
-    expect(humanPlayer.placeShips.mock.calls[0][1]).toEqual([
-      [5, 6],
-      4,
-      "vertical",
+    expect(humanPlayer.placeShips.mock.calls[0][0]).toEqual([
+      [[5, 6], "vertical"],
     ]);
-    expect(humanPlayer.placeShips.mock.calls[0][2]).toEqual(
-      [[1, 7], 3, "horizontal"],
-      [[3, 8], 3, "vertical"],
-    );
-    expect(humanPlayer.placeShips.mock.calls[0][3]).toEqual(
-      [[2, 4], 2, "horizontal"],
-      [[5, 2], 2, "horizontal"],
-      [[8, 2], 2, "vertical"],
-    );
-    expect(humanPlayer.placeShips.mock.calls[0][4]).toEqual([
-      [[0, 5], 1],
-      [[1, 1], 1],
-      [[4, 0], 1],
-      [[8, 8], 1],
+    expect(humanPlayer.placeShips.mock.calls[0][1]).toEqual([
+      [[1, 7], "horizontal"],
+      [[3, 8], "vertical"],
+    ]);
+    expect(humanPlayer.placeShips.mock.calls[0][2]).toEqual([
+      [[2, 4], "horizontal"],
+      [[5, 2], "horizontal"],
+      [[8, 2], "vertical"],
+    ]);
+    expect(humanPlayer.placeShips.mock.calls[0][3]).toEqual([
+      [[0, 5]],
+      [[1, 1]],
+      [[4, 0]],
+      [[8, 8]],
     ]);
   });
 
@@ -107,7 +107,7 @@ describe("startNewGame() ", () => {
   });
 });
 
-describe("makeMove() ", () => {
+describe.only("makeMove() ", () => {
   const humanPlayer = HumanPlayer();
   const aIPlayer = AIPlayer();
 

@@ -1,12 +1,19 @@
-import { HumanPlayer, AIPlayer } from "./Player";
+import HumanPlayer from "./HumanPlayer";
+import AIPlayer from "./AIPlayer";
 
 const GameController = () => {
-  const mPlayers = [];
-  let mGameStatus = "undecided";
+  let mHumanPlayer;
+  let mAIPlayer;
+  let mGameStatus;
   let mCurrentPlayer;
 
   const getCurrentPlayer = () => {};
 
+  /*
+   * undecided - no player wan
+   * AI - AI wan
+   * Human - Human wan
+   */
   const getGameStatus = () => {};
 
   /* startGame expects:
@@ -14,31 +21,47 @@ const GameController = () => {
    * 2 three tiles ships
    * 3 two tiles ships
    * 4 one tile ships
-   * locations = [[x1,y1],[x2,y2]...]
-   * orientations = ["vertical", "horizontal", ..]
+   * locations = [[[x1,y1], "vertical"/"horizontal",[[x2,y2]...]
    * returns a boolean value that represents the success/failure of
    * starting a new game
    */
-  const startGame =
-    (fourTileLocations,
-    fourTileOrientations,
+  const startNewGame = (
+    fourTileLocations,
     threeTileLocations,
-    threeTileOrientations,
     twoTilesLocations,
-    twoTilesOrientations,
-    oneTileLocations);
+    oneTileLocations,
+    defaultPositions = true,
+  ) => {
+    // initialize players and game status, human player is the one to start.
+    mHumanPlayer = HumanPlayer();
+    mAIPlayer = AIPlayer();
+    mGameStatus = "undecided";
+    mCurrentPlayer = mHumanPlayer;
+
+    mHumanPlayer.placeShips(
+      fourTileLocations,
+      threeTileLocations,
+      twoTilesLocations,
+      oneTileLocations,
+      defaultPositions,
+    );
+
+    mAIPlayer.placeShips();
+
+    return true;
+  };
 
   /*
-  * returns the arrays of the hits on each board
-  * the player hits board and the AI hits board
-  */
+   * returns the hits board of the player that has been hit
+   */
   const makeMove = (coordination = []) => {};
-  
 
   return {
-    startGame,
+    startNewGame,
     makeMove,
     getCurrentPlayer,
     getGameStatus,
   };
 };
+
+export default GameController;
