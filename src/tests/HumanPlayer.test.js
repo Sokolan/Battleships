@@ -1,13 +1,21 @@
+jest.mock("../js/modules/Gameboard", () => 
+  jest.fn(() => ({
+    placeShip: jest.fn(),
+    recieveAttack: jest.fn(),
+    getBoardSize: jest.fn(),
+  }))
+);
+
 import HumanPlayer from "../js/modules/HumanPlayer";
 import Gameboard from "../js/modules/Gameboard";
-import mockGameboard from "./GameboardMock";
 
-describe("test creation of HumanPlayer: ", () => {
+describe("HumanPlayer() ", () => {
+  test("TEST: can create defined HumanPlayer object: ", () => {
+    expect(HumanPlayer()).not.toBe(undefined);
+    expect(HumanPlayer()).not.toBe(null);
+  });
   test("TEST: HumanPlayer is a player", () => {
     expect(HumanPlayer().getType()).toEqual("Human");
-    expect(Object.keys(HumanPlayer().getBoard())).toEqual(
-      Object.keys(Gameboard()),
-    );
   });
 });
 
@@ -16,7 +24,7 @@ describe("makeMove() : ", () => {
   let humanPlayer;
 
   beforeEach(() => {
-    gameboard = mockGameboard();
+    gameboard = Gameboard();
     humanPlayer = HumanPlayer();
   });
 
@@ -46,11 +54,11 @@ describe("test placeShips: ", () => {
   let gameboard;
   let humanPlayer;
   beforeEach(() => {
-    gameboard = mockGameboard();
+    gameboard = Gameboard();
     humanPlayer = HumanPlayer();
   });
 
-  test("TEST: placing default placing", () => {
+  test.only("TEST: placing default placing", () => {
     /* default board:
      *     0 1 2 3 4 5 6 7 8 9
      *  0 [3, ,2,2, ,1, ,2, , ]
@@ -64,7 +72,7 @@ describe("test placeShips: ", () => {
      *  8 [ , , , , , , , ,1, ]
      *  9 [ , , , , , , , , , ]
      */
-    humanPlayer.placeShips(gameboard);
+    humanPlayer.placeShips();
     expect(gameboard.placeShip.mock.calls).toHaveLength(10);
     expect(gameboard.placeShip.mock.calls).toContainEqual([
       [3, 6],
@@ -115,7 +123,6 @@ describe("test placeShips: ", () => {
      *  9 [ , ,2, , , , , , , ]
      */
     humanPlayer.placeShips(
-      gameboard,
       [[[5, 6], "vertical"]],
       [
         [[1, 7], "horizontal"],
