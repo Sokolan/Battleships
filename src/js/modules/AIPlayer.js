@@ -1,10 +1,10 @@
 import Player from "./Player";
 
 const AIPlayer = () => {
-  const player = Player("AI");
+  const mPlayer = Player("AI");
 
   // Enemy board should have receiveAttack and getHitsBoard
-  player.makeMove = (enemyBoard) => {
+  mPlayer.makeMove = (enemyBoard) => {
     const board = enemyBoard.getHitsBoard();
     let legalMoveFound = false;
     let result;
@@ -35,22 +35,22 @@ const AIPlayer = () => {
    *  9 [ , , , , , , , , , ]
    */
 
-  player.placeShips = (gameboard, defaultArrangement = true) => {
+  mPlayer.placeShips = (defaultArrangement = true) => {
     if (defaultArrangement) {
-      gameboard.placeShip([0, 0], 3, "vertical");
-      gameboard.placeShip([0, 2], 2, "horizontal");
-      gameboard.placeShip([0, 5], 1);
-      gameboard.placeShip([0, 7], 2, "vertical");
-      gameboard.placeShip([2, 2], 3, "horizontal");
-      gameboard.placeShip([3, 6], 4, "horizontal");
-      gameboard.placeShip([4, 0], 1);
-      gameboard.placeShip([5, 2], 2, "horizontal");
-      gameboard.placeShip([6, 0], 1);
-      gameboard.placeShip([8, 8], 1);
+      mPlayer.getBoard().placeShip([0, 0], 3, "vertical");
+      mPlayer.getBoard().placeShip([0, 2], 2, "horizontal");
+      mPlayer.getBoard().placeShip([0, 5], 1);
+      mPlayer.getBoard().placeShip([0, 7], 2, "vertical");
+      mPlayer.getBoard().placeShip([2, 2], 3, "horizontal");
+      mPlayer.getBoard().placeShip([3, 6], 4, "horizontal");
+      mPlayer.getBoard().placeShip([4, 0], 1);
+      mPlayer.getBoard().placeShip([5, 2], 2, "horizontal");
+      mPlayer.getBoard().placeShip([6, 0], 1);
+      mPlayer.getBoard().placeShip([8, 8], 1);
     }
   };
 
-  return player;
+  return mPlayer;
 };
 
 export default AIPlayer;

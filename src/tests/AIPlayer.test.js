@@ -1,13 +1,22 @@
+jest.mock("../js/modules/Gameboard", () => 
+  jest.fn().mockReturnValue({
+    placeShip: jest.fn(),
+    recieveAttack: jest.fn(),
+    getBoardSize: jest.fn(),
+    getHitsBoard: jest.fn(),
+  })
+);
+
 import AIPlayer from "../js/modules/AIPlayer";
 import Gameboard from "../js/modules/Gameboard";
-import mockGameboard from "./GameboardMock";
 
-describe("test creation of AIPlayer", () => {
+describe("AIPlayer() ", () => {
+  test("TEST: can create defined AI Player object: ", () => {
+    expect(AIPlayer()).not.toBe(undefined);
+    expect(AIPlayer()).not.toBe(null);
+  });
   test("TEST: AI Player is a player", () => {
     expect(AIPlayer().getType()).toEqual("AI");
-    expect(Object.keys(AIPlayer().getBoard())).toEqual(
-      Object.keys(Gameboard()),
-    );
   });
 });
 
@@ -16,15 +25,15 @@ describe("test makeMove: ", () => {
   let gameboard;
   beforeEach(() => {
     aiPlayer = AIPlayer();
-    gameboard = mockGameboard();
+    gameboard = Gameboard();
   });
   test("TEST: make random move on empty board", () => {
-    gameboard.setHitsBoard(
+    gameboard.getHitsBoard.mockReturnValueOnce(
       Array(10)
         .fill(null)
         .map(() => Array(10).fill("")),
     );
-    gameboard.setBoardSize(10);
+    gameboard.getBoardSize.mockReturnValueOnce(10);
     gameboard.recieveAttack.mockReturnValueOnce("hit");
     aiPlayer.makeMove(gameboard);
     expect(gameboard.recieveAttack.mock.calls[0][0][0]).toBeGreaterThanOrEqual(0);
@@ -37,22 +46,22 @@ describe("test makeMove: ", () => {
       .fill(null)
       .map(() => Array(2).fill("x"));
     mockArray[0][0] = "";
-    gameboard.setBoardSize(2);
-    gameboard.setHitsBoard(mockArray);
+    gameboard.getBoardSize.mockReturnValueOnce(2);
+    gameboard.getHitsBoard.mockReturnValueOnce(mockArray);
     gameboard.recieveAttack.mockReturnValueOnce("hit");
     aiPlayer.makeMove(gameboard);
-    expect(gameboard.recieveAttack.mock.calls[0][0]).toEqual([0, 0]);
+    expect(gameboard.recieveAttack.mock.calls[1][0]).toEqual([0, 0]);
   });
   test("TEST: make random move with only [1,2] available", () => {
     const mockArray = Array(3)
       .fill(null)
       .map(() => Array(3).fill("x"));
     mockArray[1][2] = "";
-    gameboard.setBoardSize(3);
-    gameboard.setHitsBoard(mockArray);
+    gameboard.getBoardSize.mockReturnValueOnce(3);
+    gameboard.getHitsBoard.mockReturnValueOnce(mockArray);
     gameboard.recieveAttack.mockReturnValueOnce("miss");
     aiPlayer.makeMove(gameboard);
-    expect(gameboard.recieveAttack.mock.calls[0][0]).toEqual([1, 2]);
+    expect(gameboard.recieveAttack.mock.calls[2][0]).toEqual([1, 2]);
   });
 });
 
@@ -61,11 +70,11 @@ describe("test placeShips: ", () => {
   let gameboard;
   beforeEach(() => {
     aiPlayer = AIPlayer();
-    gameboard = mockGameboard();
+    gameboard = Gameboard();
   });
   test("TEST: place ships default", () => {
     gameboard.placeShip.mockReturnValue(true);
-    aiPlayer.placeShips(gameboard);
+    aiPlayer.placeShips();
     /* default board:
      *     0 1 2 3 4 5 6 7 8 9
      *  0 [3, ,2,2, ,1, ,2, , ]
