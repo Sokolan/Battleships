@@ -7,14 +7,14 @@ const GameController = () => {
   let mGameStatus;
   let mCurrentPlayer;
 
-  const getCurrentPlayer = () => {};
+  const getCurrentPlayer = () => mCurrentPlayer.getType();
 
   /*
    * undecided - no player wan
    * AI - AI wan
    * Human - Human wan
    */
-  const getGameStatus = () => {};
+  const getGameStatus = () => mGameStatus;
 
   /* startGame expects:
    * 1 four tiles ship
@@ -54,7 +54,41 @@ const GameController = () => {
   /*
    * returns the hits board of the player that has been hit
    */
-  const makeMove = (coordination = []) => {};
+  const makeMove = (coordination = []) => {
+    if (mGameStatus !== "undecided") {
+      return null;
+    }
+
+    const moveStatus = mCurrentPlayer.makeMove(coordination);
+    if (moveStatus === "ERROR") {
+      return null;
+    }
+
+    if (moveStatus === "miss") {
+
+      if (getCurrentPlayer() === "Human") {
+
+        mCurrentPlayer = mAIPlayer;
+      }
+      else {
+        mCurrentPlayer = mHumanPlayer;
+      }
+
+      return mCurrentPlayer.getBoard().getHitsBoard();
+    }
+
+    // else we have a hit
+    if (moveStatus === "hit") {
+      if (getCurrentPlayer() === "Human" && mAIPlayer.getBoard().allShipsSunk()) {
+        mGameStatus = "Human";
+      }
+      else if (getCurrentPlayer() === "AI" && mHumanPlayer.getBoard().allShipsSunk()) {
+        mGameStatus = "AI";
+      }
+    }
+
+    return mAIPlayer.getBoard().getHitsBoard();    
+  };
 
   return {
     startNewGame,

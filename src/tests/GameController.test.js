@@ -2,20 +2,24 @@ jest.mock("../js/modules/HumanPlayer", () =>
   jest.fn().mockReturnValue({
     placeShips: jest.fn(),
     makeMove: jest.fn(),
-    getBoard: jest.fn(() => ({
+    getType: () => "Human",
+    getBoard: jest.fn().mockReturnValue({
       recieveAttack: jest.fn(),
       allShipsSunk: jest.fn(),
-    })),
+      getHitsBoard: jest.fn(),
+    }),
   }),
 );
 
 jest.mock("../js/modules/AIPlayer", () =>
   jest.fn().mockReturnValue({
     placeShips: jest.fn(),
+    getType: () => "AI",
     makeMove: jest.fn(),
     getBoard: jest.fn().mockReturnValue({
       allShipsSunk: jest.fn(),
       recieveAttack: jest.fn(),
+      getHitsBoard: jest.fn(),
     }),
   }),
 );
@@ -107,21 +111,24 @@ describe("startNewGame() ", () => {
   });
 });
 
-describe.only("makeMove() ", () => {
+describe("makeMove() ", () => {
   const humanPlayer = HumanPlayer();
   const aIPlayer = AIPlayer();
 
   beforeEach(() => {
+    jest.clearAllMocks();
     gameController = GameController();
+    gameController.startNewGame();
   });
 
   test("should trigger HumanPlayer.makeMove() ", () => {
     expect(gameController.getCurrentPlayer()).toBe("Human");
     gameController.makeMove([0, 0]);
     expect(humanPlayer.makeMove.mock.calls).toHaveLength(1);
-    expect(humanPlayer.makeMove.mock.calls[0][1]).toEqual([0, 0]);
+    expect(humanPlayer.makeMove.mock.calls[0][0]).toEqual([0, 0]);
   });
   test("should trigger AIPlayer.makeMove() ", () => {
+    humanPlayer.makeMove.mockReturnValueOnce("miss");
     gameController.makeMove([0, 0]);
     expect(gameController.getCurrentPlayer()).toEqual("AI");
     gameController.makeMove();
@@ -143,8 +150,9 @@ describe.only("makeMove() ", () => {
      */
     const gameboard = Gameboard();
     // for human palyer
-    humanPlayer.makeMove.mockReturnValueOnce(gameboard.getHitsBoard());
-    expect(gameController.makeMove()).toEqual(gameboard.getHitsBoard());
+    humanPlayer.makeMove.mockReturnValueOnce("miss");
+    aIPlayer.getBoard().getHitsBoard.mockReturnValue(gameboard.getHitsBoard());
+    expect(gameController.makeMove([0,0])).toEqual(gameboard.getHitsBoard());
     // for AI player
     aIPlayer.makeMove.mockReturnValueOnce(gameboard.getHitsBoard());
     expect(gameController.makeMove()).toEqual(gameboard.getHitsBoard());
@@ -156,14 +164,16 @@ describe("getCurrentPlayer() ", () => {
   const aIPlayer = AIPlayer();
 
   beforeEach(() => {
+    jest.clearAllMocks();
     gameController = GameController();
+    gameController.startNewGame();
   });
 
   test("first move should be human player ", () => {
-    expect(gameController.getCurrentPlayer()).toEqual("human");
+    expect(gameController.getCurrentPlayer()).toEqual("Human");
   });
   test("should switch to player after player misses", () => {
-    humanPlayer.getBoard.recieveAttack.mockReturnValueOnce("miss");
+    humanPlayer.makeMove.mockReturnValue("miss");
     gameController.makeMove([0, 0]);
     expect(gameController.getCurrentPlayer()).toEqual("AI");
   });
@@ -182,17 +192,17 @@ describe("getGameStatus() ", () => {
     expect(gameController.getGameStatus()).toEqual("undecided");
   });
   test("if it's Human turn and AI board ships were all sunk, Human wan", () => {
-    aIPlayer.getBoard.allShipsSunk.mockReturnValueOnce(true);
-    aIPlayer.getBoard.recieveAttack.mockReturnValueOnce("hit");
+    aIPlayer.getBoard().allShipsSunk.mockReturnValueOnce(true);
+    humanPlayer.makeMove.mockReturnValueOnce("hit");
     gameController.makeMove([0, 0]);
     expect(gameController.getGameStatus()).toEqual("Human");
   });
   test("if it's AI turn and Human board ships were all sunk after AI hit, AI wan", () => {
-    aIPlayer.getBoard.recieveAttack.mockReturnValueOnce("miss");
+    humanPlayer.makeMove.mockReturnValueOnce("miss");
     gameController.makeMove([0, 0]);
-    humanPlayer.getBoard.recieveAttack.mockReturnValueOnce("hit");
-    humanPlayer.getBoard.allShipsSunk.mockReturnValueOnce(true);
+    aIPlayer.makeMove.mockReturnValueOnce("hit");
+    humanPlayer.getBoard().allShipsSunk.mockReturnValueOnce(true);
     gameController.makeMove([0, 0]);
-    expect(gameController.getGameStatus()).toEqual("Human");
+    expect(gameController.getGameStatus()).toEqual("AI");
   });
 });
