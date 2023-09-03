@@ -62,6 +62,7 @@ describe("test placeShips: ", () => {
   let gameboard;
   let humanPlayer;
   beforeEach(() => {
+    jest.clearAllMocks();
     gameboard = Gameboard();
     humanPlayer = HumanPlayer();
   });
@@ -80,6 +81,7 @@ describe("test placeShips: ", () => {
      *  8 [ , , , , , , , ,1, ]
      *  9 [ , , , , , , , , , ]
      */
+    gameboard.placeShip.mockReturnValue(true);
     humanPlayer.placeShips();
     expect(gameboard.placeShip.mock.calls).toHaveLength(10);
     expect(gameboard.placeShip.mock.calls).toContainEqual([
@@ -130,6 +132,7 @@ describe("test placeShips: ", () => {
      *  8 [ , ,2, , , ,4, ,1, ]
      *  9 [ , ,2, , , , , , , ]
      */
+    gameboard.placeShip.mockReturnValue(true);
     humanPlayer.placeShips(
       [[[5, 6], "vertical"]],
       [

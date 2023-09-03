@@ -10,14 +10,19 @@ const HumanPlayer = () => {
 
   // TODO: add errors handling
   const mPlaceArrayOfShips = (shipsLocations, shipSize) => {
+    let isArrangementLegal = true;
     shipsLocations.forEach((shipLocation) => {
-      if(shipSize > 1){
-        mPlayer.getBoard().placeShip(shipLocation[0], shipSize, shipLocation[1]);
-      }
-      else {
-        mPlayer.getBoard().placeShip(shipLocation[0], shipSize);
+      if (shipSize > 1) {
+        isArrangementLegal = mPlayer
+          .getBoard()
+          .placeShip(shipLocation[0], shipSize, shipLocation[1]);
+      } else {
+        isArrangementLegal = mPlayer
+          .getBoard()
+          .placeShip(shipLocation[0], shipSize);
       }
     });
+    return isArrangementLegal;
   };
   // Enemy board should have placeShip
   /* default board:
@@ -41,23 +46,37 @@ const HumanPlayer = () => {
     oneTileLocations,
     defaultArrangement = true,
   ) => {
+    let isArrangementLegal = true;
     if (defaultArrangement) {
-      mPlayer.getBoard().placeShip([3, 6], 4, "horizontal");
-      mPlayer.getBoard().placeShip([0, 0], 3, "vertical");
-      mPlayer.getBoard().placeShip([2, 2], 3, "horizontal");
-      mPlayer.getBoard().placeShip([0, 2], 2, "horizontal");
-      mPlayer.getBoard().placeShip([0, 7], 2, "vertical");
-      mPlayer.getBoard().placeShip([5, 2], 2, "horizontal");
-      mPlayer.getBoard().placeShip([0, 5], 1);
-      mPlayer.getBoard().placeShip([4, 0], 1);
-      mPlayer.getBoard().placeShip([6, 0], 1);
-      mPlayer.getBoard().placeShip([8, 8], 1);
-      return;
+      isArrangementLegal = mPlayer
+        .getBoard()
+        .placeShip([3, 6], 4, "horizontal");
+      isArrangementLegal = mPlayer.getBoard().placeShip([0, 0], 3, "vertical");
+      isArrangementLegal = mPlayer
+        .getBoard()
+        .placeShip([2, 2], 3, "horizontal");
+      isArrangementLegal = mPlayer
+        .getBoard()
+        .placeShip([0, 2], 2, "horizontal");
+      isArrangementLegal = mPlayer.getBoard().placeShip([0, 7], 2, "vertical");
+      isArrangementLegal = mPlayer
+        .getBoard()
+        .placeShip([5, 2], 2, "horizontal");
+      isArrangementLegal = mPlayer.getBoard().placeShip([0, 5], 1);
+      isArrangementLegal = mPlayer.getBoard().placeShip([4, 0], 1);
+      isArrangementLegal = mPlayer.getBoard().placeShip([6, 0], 1);
+      isArrangementLegal = mPlayer.getBoard().placeShip([8, 8], 1);
+    } else {
+      isArrangementLegal = mPlaceArrayOfShips(fourTileLocations, 4);
+      isArrangementLegal = mPlaceArrayOfShips(threeTileLocations, 3);
+      isArrangementLegal = mPlaceArrayOfShips(twoTilesLocations, 2);
+      isArrangementLegal = mPlaceArrayOfShips(oneTileLocations, 1);
     }
-    mPlaceArrayOfShips(fourTileLocations, 4);
-    mPlaceArrayOfShips(threeTileLocations, 3);
-    mPlaceArrayOfShips(twoTilesLocations, 2);
-    mPlaceArrayOfShips(oneTileLocations, 1);
+    if (!isArrangementLegal) {
+      mPlayer.getBoard().resetBoard();
+      return false;
+    }
+    return true;
   };
 
   return mPlayer;

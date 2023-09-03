@@ -175,12 +175,17 @@ const Gameboard = () => {
     // Either it's non occupied square eighter the ship is sank
     mShipsBoard.every((row) => row.every((cell) => cell === null || cell.isSunk()));
 
+  const resetBoard = () => {
+    mHitsBoard.forEach((row) => row.map(() => Array(10).fill("")));
+    mShipsBoard.forEach((row) => row.map(() => Array(10).fill(null)));
+  }
   return {
     getHitsBoard,
     placeShip,
     recieveAttack,
     allShipsSunk,
     getBoardSize,
+    resetBoard,
   };
 };
 

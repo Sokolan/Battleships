@@ -69,6 +69,7 @@ describe("test placeShips: ", () => {
   let aiPlayer;
   let gameboard;
   beforeEach(() => {
+    jest.clearAllMocks();
     aiPlayer = AIPlayer();
     gameboard = Gameboard();
   });
