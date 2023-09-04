@@ -1,0 +1,23 @@
+footer {
+  --gap-items: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-items);
+}
+
+footer > p {
+  border-left: 1px solid rgb(0, 0, 0);
+  padding-left: var(--gap-items);
+  padding: 5px 0px 5px var(--gap-items);
+  margin: 0;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+
+.git-img {
+  padding: 5px 0px 4px 0px;
+  height: 20px;
+  /* filter: invert(1); */
+}
