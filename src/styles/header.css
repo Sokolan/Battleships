@@ -1,0 +1,15 @@
+header {
+  background: yellow;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header-title {
+  align-self: center;
+}
+
+.header-title > p {
+  font-size: 50px;
+  font-weight: 600;
+}
