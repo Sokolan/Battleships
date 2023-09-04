@@ -1,5 +1,5 @@
-import Player from "../js/modules/Player";
-import Gameboard from "../js/modules/Gameboard";
+import Player from "../js/modules/logic/Player";
+import Gameboard from "../js/modules/logic/Gameboard";
 
 test("TEST: create Player and test basic functionality", () => {
   const player = Player("AI");

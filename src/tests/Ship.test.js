@@ -1,4 +1,4 @@
-import Ship from "../js/modules/Ship";
+import Ship from "../js/modules/logic/Ship";
 
 describe("Ship()", () => {
   test("TEST: newly created 1 tile long ship isn't sunk", () => {

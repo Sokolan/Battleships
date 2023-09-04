@@ -6,7 +6,7 @@
 //   }))
 // );
 
-jest.mock("../js/modules/Gameboard", () => 
+jest.mock("../js/modules/logic/Gameboard", () => 
   jest.fn().mockReturnValue({
     placeShip: jest.fn(),
     recieveAttack: jest.fn(),
@@ -14,8 +14,8 @@ jest.mock("../js/modules/Gameboard", () =>
   })
 );
 
-import HumanPlayer from "../js/modules/HumanPlayer";
-import Gameboard from "../js/modules/Gameboard";
+import HumanPlayer from "../js/modules/logic/HumanPlayer";
+import Gameboard from "../js/modules/logic/Gameboard";
 
 describe("HumanPlayer() ", () => {
   test("TEST: can create defined HumanPlayer object: ", () => {

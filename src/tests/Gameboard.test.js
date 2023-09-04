@@ -1,4 +1,4 @@
-import Gameboard from "../js/modules/Gameboard";
+import Gameboard from "../js/modules/logic/Gameboard";
 
 describe("Test placing ships", () => {
   let gameboard;

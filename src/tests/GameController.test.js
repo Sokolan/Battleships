@@ -1,4 +1,4 @@
-jest.mock("../js/modules/HumanPlayer", () =>
+jest.mock("../js/modules/logic/HumanPlayer", () =>
   jest.fn().mockReturnValue({
     placeShips: jest.fn(),
     makeMove: jest.fn(),
@@ -11,7 +11,7 @@ jest.mock("../js/modules/HumanPlayer", () =>
   }),
 );
 
-jest.mock("../js/modules/AIPlayer", () =>
+jest.mock("../js/modules/logic/AIPlayer", () =>
   jest.fn().mockReturnValue({
     placeShips: jest.fn(),
     getType: () => "AI",
@@ -24,10 +24,10 @@ jest.mock("../js/modules/AIPlayer", () =>
   }),
 );
 
-import GameController from "../js/modules/GameController";
-import Gameboard from "../js/modules/Gameboard";
-import HumanPlayer from "../js/modules/HumanPlayer";
-import AIPlayer from "../js/modules/AIPlayer";
+import GameController from "../js/modules/logic/GameController";
+import Gameboard from "../js/modules/logic/Gameboard";
+import HumanPlayer from "../js/modules/logic/HumanPlayer";
+import AIPlayer from "../js/modules/logic/AIPlayer";
 
 describe("GameController() object creation", () => {
   test("TEST: can create GameController object", () => {

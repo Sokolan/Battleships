@@ -1,4 +1,4 @@
-jest.mock("../js/modules/Gameboard", () => 
+jest.mock("../js/modules/logic/Gameboard", () => 
   jest.fn().mockReturnValue({
     placeShip: jest.fn(),
     recieveAttack: jest.fn(),
@@ -7,8 +7,8 @@ jest.mock("../js/modules/Gameboard", () =>
   })
 );
 
-import AIPlayer from "../js/modules/AIPlayer";
-import Gameboard from "../js/modules/Gameboard";
+import AIPlayer from "../js/modules/logic/AIPlayer";
+import Gameboard from "../js/modules/logic/Gameboard";
 
 describe("AIPlayer() ", () => {
   test("TEST: can create defined AI Player object: ", () => {
