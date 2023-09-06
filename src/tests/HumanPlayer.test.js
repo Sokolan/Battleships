@@ -11,6 +11,7 @@ jest.mock("../js/modules/logic/Gameboard", () =>
     placeShip: jest.fn(),
     recieveAttack: jest.fn(),
     getBoardSize: jest.fn(),
+    isPositioningLegal: jest.fn(),
   })
 );
 
@@ -82,6 +83,7 @@ describe("test placeShips: ", () => {
      *  9 [ , , , , , , , , , ]
      */
     gameboard.placeShip.mockReturnValue(true);
+    gameboard.isPositioningLegal.mockReturnValue(true);
     humanPlayer.placeShips();
     expect(gameboard.placeShip.mock.calls).toHaveLength(10);
     expect(gameboard.placeShip.mock.calls).toContainEqual([
