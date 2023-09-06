@@ -65,12 +65,9 @@ const GameController = () => {
     }
 
     if (moveStatus === "miss") {
-
       if (getCurrentPlayer() === "Human") {
-
         mCurrentPlayer = mAIPlayer;
-      }
-      else {
+      } else {
         mCurrentPlayer = mHumanPlayer;
       }
 
@@ -79,22 +76,43 @@ const GameController = () => {
 
     // else we have a hit
     if (moveStatus === "hit") {
-      if (getCurrentPlayer() === "Human" && mAIPlayer.getBoard().allShipsSunk()) {
+      if (
+        getCurrentPlayer() === "Human" &&
+        mAIPlayer.getBoard().allShipsSunk()
+      ) {
         mGameStatus = "Human";
-      }
-      else if (getCurrentPlayer() === "AI" && mHumanPlayer.getBoard().allShipsSunk()) {
+      } else if (
+        getCurrentPlayer() === "AI" &&
+        mHumanPlayer.getBoard().allShipsSunk()
+      ) {
         mGameStatus = "AI";
       }
     }
 
-    return mAIPlayer.getBoard().getHitsBoard();    
+    return mAIPlayer.getBoard().getHitsBoard();
   };
+
+  const isPositioningLegal = (
+    fourTileLocations,
+    threeTileLocations,
+    twoTilesLocations,
+    oneTileLocations,
+  ) =>
+    mHumanPlayer
+      .getBoard()
+      .isPositioningLegal(
+        fourTileLocations,
+        threeTileLocations,
+        twoTilesLocations,
+        oneTileLocations,
+      );
 
   return {
     startNewGame,
     makeMove,
     getCurrentPlayer,
     getGameStatus,
+    isPositioningLegal,
   };
 };
 

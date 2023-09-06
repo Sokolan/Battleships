@@ -173,12 +173,43 @@ const Gameboard = () => {
   // returns boolean with answer
   const allShipsSunk = () =>
     // Either it's non occupied square eighter the ship is sank
-    mShipsBoard.every((row) => row.every((cell) => cell === null || cell.isSunk()));
+    mShipsBoard.every((row) =>
+      row.every((cell) => cell === null || cell.isSunk()),
+    );
 
   const resetBoard = () => {
     mHitsBoard.forEach((row) => row.map(() => Array(10).fill("")));
     mShipsBoard.forEach((row) => row.map(() => Array(10).fill(null)));
-  }
+  };
+
+  const mPlaceArrayOfShips = (shipsLocations, shipSize) => {
+    let isArrangementLegal = true;
+    shipsLocations.forEach((shipLocation) => {
+      if (shipSize > 1) {
+        isArrangementLegal = placeShip(shipLocation[0], shipSize, shipLocation[1]);
+      } else {
+        isArrangementLegal = placeShip(shipLocation[0], shipSize);
+      }
+    });
+    return isArrangementLegal;
+  };
+
+  const isPositioningLegal = (
+    fourTileLocations,
+    threeTileLocations,
+    twoTilesLocations,
+    oneTileLocations,
+  ) => {
+    let isArrangementLegal = true;
+    isArrangementLegal = mPlaceArrayOfShips(fourTileLocations, 4);
+    isArrangementLegal = mPlaceArrayOfShips(threeTileLocations, 3);
+    isArrangementLegal = mPlaceArrayOfShips(twoTilesLocations, 2);
+    isArrangementLegal = mPlaceArrayOfShips(oneTileLocations, 1);
+    resetBoard();
+
+    return isArrangementLegal;
+  };
+
   return {
     getHitsBoard,
     placeShip,
@@ -186,6 +217,7 @@ const Gameboard = () => {
     allShipsSunk,
     getBoardSize,
     resetBoard,
+    isPositioningLegal,
   };
 };
 
