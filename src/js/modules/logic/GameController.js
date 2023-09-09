@@ -98,7 +98,7 @@ const GameController = () => {
     twoTilesLocations,
     oneTileLocations,
   ) =>
-    mHumanPlayer
+    HumanPlayer()
       .getBoard()
       .isPositioningLegal(
         fourTileLocations,

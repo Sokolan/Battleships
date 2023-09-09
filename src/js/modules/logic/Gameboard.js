@@ -119,6 +119,22 @@ const Gameboard = () => {
       return false;
     }
 
+    // Check if out of boundaries
+    if (
+      (orientation === "horizontal" &&
+        !mCoordinateValid([
+          startCoordination[0],
+          startCoordination[1] + length - 1,
+        ])) ||
+      (orientation === "vertical" &&
+        !mCoordinateValid([
+          startCoordination[0] + length - 1,
+          startCoordination[1],
+        ]))
+    ) {
+      return false;
+    }
+
     // Check for neighbouring ships
     if (!mCheckForNoShips(startCoordination, length, orientation)) {
       return false;
@@ -183,13 +199,15 @@ const Gameboard = () => {
   };
 
   const mPlaceArrayOfShips = (shipsLocations, shipSize) => {
-    let isArrangementLegal = true;
-    shipsLocations.forEach((shipLocation) => {
+    let isArrangementLegal;
+    isArrangementLegal = shipsLocations.every((shipLocation) => {
+      let canPlaceShip;
       if (shipSize > 1) {
-        isArrangementLegal = placeShip(shipLocation[0], shipSize, shipLocation[1]);
+        canPlaceShip = placeShip(shipLocation[0], shipSize, shipLocation[1]);
       } else {
-        isArrangementLegal = placeShip(shipLocation[0], shipSize);
+        canPlaceShip = placeShip(shipLocation[0], shipSize);
       }
+      return canPlaceShip;
     });
     return isArrangementLegal;
   };
@@ -200,14 +218,19 @@ const Gameboard = () => {
     twoTilesLocations,
     oneTileLocations,
   ) => {
-    let isArrangementLegal = true;
-    isArrangementLegal = mPlaceArrayOfShips(fourTileLocations, 4);
-    isArrangementLegal = mPlaceArrayOfShips(threeTileLocations, 3);
-    isArrangementLegal = mPlaceArrayOfShips(twoTilesLocations, 2);
-    isArrangementLegal = mPlaceArrayOfShips(oneTileLocations, 1);
+    console.log(fourTileLocations);
+    const isFourTilesLegal = mPlaceArrayOfShips(fourTileLocations, 4);
+    const isThreeTilesLegal = mPlaceArrayOfShips(threeTileLocations, 3);
+    const isTwoTilesLegal = mPlaceArrayOfShips(twoTilesLocations, 2);
+    const isOneTilesLegal = mPlaceArrayOfShips(oneTileLocations, 1);
     resetBoard();
 
-    return isArrangementLegal;
+    return (
+      isFourTilesLegal &&
+      isThreeTilesLegal &&
+      isTwoTilesLegal &&
+      isOneTilesLegal
+    );
   };
 
   return {
