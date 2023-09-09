@@ -218,7 +218,6 @@ const Gameboard = () => {
     twoTilesLocations,
     oneTileLocations,
   ) => {
-    console.log(fourTileLocations);
     const isFourTilesLegal = mPlaceArrayOfShips(fourTileLocations, 4);
     const isThreeTilesLegal = mPlaceArrayOfShips(threeTileLocations, 3);
     const isTwoTilesLegal = mPlaceArrayOfShips(twoTilesLocations, 2);
