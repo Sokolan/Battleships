@@ -3,19 +3,19 @@ import createElement from "../util/utils";
 import PlayerBoard from "./playerBoard";
 import EnemyBoard from "./enemyBoard";
 
-const createBoardsSection = () => {
+const createBoardsSection = (boardValidator) => {
   const boardsContainer = createElement("div", ["boards-container"]);
-  boardsContainer.appendChild(PlayerBoard());
+  boardsContainer.appendChild(PlayerBoard(boardValidator));
   boardsContainer.appendChild(EnemyBoard());
 
   return boardsContainer;
 };
 
 
-const Body = () => {
+const Body = (boardValidator) => {
   const body = createElement("div", [], [["id", "body"]]);
 
-  body.appendChild(createBoardsSection());
+  body.appendChild(createBoardsSection(boardValidator));
 
   return body;
 };
