@@ -10,7 +10,6 @@ const rowSize = 10;
 const shipsAndLocations = [];
 
 let currentShipDragged = null;
-let currentShipOldLocation = null;
 let boardValidator;
 
 const checkShipsPosition = () => {
@@ -50,8 +49,6 @@ const checkShipsPosition = () => {
     }
     return arr;
   };
-
-  // console.log(arrayOfNTilesLongShip(4));
 
   return boardValidator(
     arrayOfNTilesLongShip(4),
@@ -147,29 +144,33 @@ const deRenderShip = (shipNum) => {
     const column = Number.parseInt(location.dataset.column, 10);
 
     if (ship.dataset.orientation === "horizontal") {
-      playerBoardArray[row * rowSize + column + i].classList.remove("ship-tile");
+      playerBoardArray[row * rowSize + column + i].classList.remove(
+        "ship-tile",
+      );
     } else {
-      playerBoardArray[(row + i) * rowSize + column].classList.remove("ship-tile");
+      playerBoardArray[(row + i) * rowSize + column].classList.remove(
+        "ship-tile",
+      );
     }
   }
-}
+};
 
 const setShipsEventListeners = () => {
   shipsAndLocations.forEach((shipAndLocation) => {
-    const {ship} = shipAndLocation;
+    const { ship } = shipAndLocation;
     ship.addEventListener("dragstart", (e) => {
       currentShipDragged = e.target;
+      deRenderShip(currentShipDragged.dataset.shipnum);
     });
     ship.addEventListener("click", (e) => {
       const switchDirection = () => {
         const direction = shipAndLocation.ship.dataset.orientation;
         if (direction === "horizontal") {
           ship.dataset.orientation = "vertical";
-        }
-        else {
+        } else {
           ship.dataset.orientation = "horizontal";
         }
-      }
+      };
       switchDirection();
       if (!checkShipsPosition()) {
         switchDirection();
@@ -188,7 +189,6 @@ const PlayerBoard = (boardValidatorFunction) => {
   playerBoard.appendChild(UIGameboard());
   boardValidator = boardValidatorFunction;
   [...playerBoard.firstElementChild.children].forEach((boardCell) => {
-
     boardCell.addEventListener("dragover", (e) => {
       e.preventDefault();
     });
@@ -205,15 +205,15 @@ const PlayerBoard = (boardValidatorFunction) => {
         shipsAndLocations[currentShipDragged.dataset.shipnum].location;
       shipsAndLocations[currentShipDragged.dataset.shipnum].location = e.target;
 
-      if (checkShipsPosition(boardValidator)) {
+      if (checkShipsPosition()) {
         e.target.classList.add("ship-hover");
       } else {
         e.target.classList.add("ship-hover", "ilegal-position");
       }
 
-      shipsAndLocations[currentShipDragged.dataset.shipnum].location = prevLocation
+      shipsAndLocations[currentShipDragged.dataset.shipnum].location =
+        prevLocation;
     });
-
 
     boardCell.addEventListener("dragleave", (e) => {
       if (!currentShipDragged) {
@@ -221,7 +221,6 @@ const PlayerBoard = (boardValidatorFunction) => {
       }
       e.target.classList.remove("ship-hover", "ilegal-position");
     });
-
 
     boardCell.addEventListener("drag", (e) => {
       e.target.parentNode.classList.remove("ship-hover");
@@ -235,25 +234,30 @@ const PlayerBoard = (boardValidatorFunction) => {
         return;
       }
 
+      const currentShipNum = currentShipDragged.dataset.shipnum;
       e.target.classList.remove("ship-hover");
 
       // if the position ilegal, nothing more to do
+      const prevLocation =
+        shipsAndLocations[currentShipNum].location;
+      shipsAndLocations[currentShipNum].location = e.target;
+
       if (!checkShipsPosition()) {
+        shipsAndLocations[currentShipNum].location = prevLocation;
+        renderShip(currentShipNum);
         currentShipDragged = null;
         return;
       }
       // If the position is legal and we're in board-cell element and we're dragging a ship
       // We can add our ship safely
-      const currentShipNum = currentShipDragged.dataset.shipnum;
       e.target.appendChild(currentShipDragged);
       deRenderShip(currentShipNum);
       shipsAndLocations[currentShipNum].location = e.target;
       renderShip(currentShipNum);
-      
+
       // need to clear old ship location
       currentShipDragged = null;
     });
-
   });
 
   initializeShipsAndLocations(playerBoard);
