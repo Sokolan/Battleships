@@ -6,6 +6,9 @@ const GameController = () => {
   let mAIPlayer;
   let mGameStatus;
   let mCurrentPlayer;
+  let mIsGameStarted = false;
+
+  const isGameStarted = () => mIsGameStarted;
 
   const getCurrentPlayer = () => mCurrentPlayer.getType();
 
@@ -37,6 +40,7 @@ const GameController = () => {
     mAIPlayer = AIPlayer();
     mGameStatus = "undecided";
     mCurrentPlayer = mHumanPlayer;
+    mIsGameStarted = true;
 
     mHumanPlayer.placeShips(
       fourTileLocations,
@@ -113,6 +117,7 @@ const GameController = () => {
     getCurrentPlayer,
     getGameStatus,
     isPositioningLegal,
+    isGameStarted,
   };
 };
 
