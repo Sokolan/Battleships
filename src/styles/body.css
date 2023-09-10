@@ -22,10 +22,36 @@
 .board-cell {
   background-color: aliceblue;
   border: 1px solid black;
+  /* overflow:visible; */
 }
 
 .ships-container {
-  height: 50px;
-  width: 50px;
-  background-color: black;
+  gap: 1px;
+  cursor: move;
+}
+
+.ship-container {
+  z-index: 2;
+  height: 40px;
+  width: 40px;
+  cursor: move;
+  /* width: 40px; */
+  /* width: fit-content; */
+  ;
+}
+
+.ship-tile {
+  background: grey;
+}
+
+.ship-hover {
+  background-color: green;
+}
+
+.ship-hover.ilegal-position {
+  background-color: red;
+}
+
+.temp-ship-tile {
+  background-color: yellow;
 }

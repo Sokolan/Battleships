@@ -1,16 +1,16 @@
-import '../../../styles/style.css';
+import "../../../styles/style.css";
 
 import createElement from "./util/utils";
 import Header from "./components/header";
 import Body from "./components/body";
 import Footer from "./components/footer";
 
-const DisplayHandler = () => {
-  const content = document.querySelector('#content')
+const DisplayHandler = (gameController) => {
+  const content = document.querySelector("#content");
 
   content.appendChild(Header());
-  content.appendChild(Body());
+  content.appendChild(Body(gameController));
   content.appendChild(Footer());
-}
+};
 
 export default DisplayHandler;

@@ -4,59 +4,58 @@ import UIShip from "./ship";
 
 let playerBoard;
 const rowSize = 10;
+let gameController = null;
 
 // store the tiles for the initial locations
 // 1 4 tiles, 2 3 tiles, 3 2 tiles, 4 1 tiles
 const shipsAndLocations = [];
 
 let currentShipDragged = null;
-let boardValidator;
 
-const checkShipsPosition = () => {
-  const arrayOfNTilesLongShip = (length) => {
-    const arr = [];
-    let from;
-    let to;
-    switch (length) {
-      case 4:
-        from = 0;
-        to = 0;
-        break;
-      case 3:
-        from = 1;
-        to = 2;
-        break;
-      case 2:
-        from = 3;
-        to = 5;
-        break;
-      case 1:
-        from = 6;
-        to = 9;
-        break;
-      default:
-        console.log("LENGTH ILLEGAL");
-    }
+export const arrayOfNTilesLongShip = (length) => {
+  const arr = [];
+  let from;
+  let to;
+  switch (length) {
+    case 4:
+      from = 0;
+      to = 0;
+      break;
+    case 3:
+      from = 1;
+      to = 2;
+      break;
+    case 2:
+      from = 3;
+      to = 5;
+      break;
+    case 1:
+      from = 6;
+      to = 9;
+      break;
+    default:
+      console.log("LENGTH ILLEGAL");
+  }
 
-    for (let i = from; i <= to; i += 1) {
-      arr.push([
-        [
-          Number.parseInt(shipsAndLocations[i].location.dataset.row, 10),
-          Number.parseInt(shipsAndLocations[i].location.dataset.column, 10),
-        ],
-        shipsAndLocations[i].ship.dataset.orientation,
-      ]);
-    }
-    return arr;
-  };
+  for (let i = from; i <= to; i += 1) {
+    arr.push([
+      [
+        Number.parseInt(shipsAndLocations[i].location.dataset.row, 10),
+        Number.parseInt(shipsAndLocations[i].location.dataset.column, 10),
+      ],
+      shipsAndLocations[i].ship.dataset.orientation,
+    ]);
+  }
+  return arr;
+};
 
-  return boardValidator(
+const checkShipsPosition = () =>  gameController.isPositioningLegal(
     arrayOfNTilesLongShip(4),
     arrayOfNTilesLongShip(3),
     arrayOfNTilesLongShip(2),
     arrayOfNTilesLongShip(1),
   );
-};
+;
 
 const initializeShipsAndLocations = () => {
   /* default board:
@@ -184,10 +183,10 @@ const setShipsEventListeners = () => {
   });
 };
 
-const PlayerBoard = (boardValidatorFunction) => {
+export const PlayerBoard = (gameControllerInput) => {
   playerBoard = createElement("div", ["player-board"]);
   playerBoard.appendChild(UIGameboard());
-  boardValidator = boardValidatorFunction;
+  gameController = gameControllerInput;
   [...playerBoard.firstElementChild.children].forEach((boardCell) => {
     boardCell.addEventListener("dragover", (e) => {
       e.preventDefault();
@@ -269,4 +268,3 @@ const PlayerBoard = (boardValidatorFunction) => {
   return playerBoard;
 };
 
-export default PlayerBoard;
