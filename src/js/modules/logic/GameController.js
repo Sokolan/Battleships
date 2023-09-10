@@ -64,13 +64,13 @@ const GameController = () => {
     }
     const emenyBoard =
       getCurrentPlayer() === "Human"
-        ? mHumanPlayer.getBoard()
-        : mAIPlayer.getBoard();
+        ? mAIPlayer.getBoard()
+        : mHumanPlayer.getBoard();
     const moveStatus = mCurrentPlayer.makeMove(emenyBoard, coordination);
     if (moveStatus === "ERROR") {
       return null;
     }
-
+    console.log(moveStatus);
     if (moveStatus === "miss") {
       if (getCurrentPlayer() === "Human") {
         mCurrentPlayer = mAIPlayer;
@@ -95,7 +95,6 @@ const GameController = () => {
         mGameStatus = "AI";
       }
     }
-
     return mAIPlayer.getBoard().getHitsBoard();
   };
 
