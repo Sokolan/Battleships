@@ -49,14 +49,13 @@ export const arrayOfNTilesLongShip = (length) => {
   return arr;
 };
 
-const checkShipsPosition = () =>  gameController.isPositioningLegal(
+const checkShipsPosition = () =>
+  gameController.isPositioningLegal(
     arrayOfNTilesLongShip(4),
     arrayOfNTilesLongShip(3),
     arrayOfNTilesLongShip(2),
     arrayOfNTilesLongShip(1),
   );
-;
-
 const initializeShipsAndLocations = () => {
   /* default board:
    *     0 1 2 3 4 5 6 7 8 9
@@ -118,6 +117,30 @@ const initializeShipsAndLocations = () => {
   });
 };
 
+const renderHits = (humanHitsBoard) => {
+  humanHitsBoard.forEach((row, rowIndex) =>
+    row.forEach((column, columnIndex) => {
+      if (column === "") return;
+      const cell = document.querySelector(
+        `.player-board .board-cell[data-row="${rowIndex}"][data-column="${columnIndex}"]`,
+      );
+      if (column === "o") cell.classList.add("hit");
+      if (column === "x") cell.classList.add("miss");
+    }),
+  );
+};
+
+export const getHitsOnPlayerBoard = () => {
+  // first check if we can make a move
+  while (
+    gameController.getGameStatus() !== "undecided" ||
+    gameController.getCurrentPlayer() === "AI"
+  ) {
+    const humanHitsBoard = gameController.makeMove();
+    renderHits(humanHitsBoard);
+  }
+};
+
 const renderShip = (shipNum) => {
   const { ship, location } = shipsAndLocations[shipNum];
   location.appendChild(ship);
@@ -158,6 +181,9 @@ const setShipsEventListeners = () => {
   shipsAndLocations.forEach((shipAndLocation) => {
     const { ship } = shipAndLocation;
     ship.addEventListener("dragstart", (e) => {
+      if (gameController.isGameStarted()) {
+        return;
+      }
       currentShipDragged = e.target;
       deRenderShip(currentShipDragged.dataset.shipnum);
     });
@@ -222,6 +248,7 @@ export const PlayerBoard = (gameControllerInput) => {
     });
 
     boardCell.addEventListener("drag", (e) => {
+      if (gameController.isGameStarted()) return;
       e.target.parentNode.classList.remove("ship-hover");
     });
 
@@ -232,13 +259,11 @@ export const PlayerBoard = (gameControllerInput) => {
       if (!currentShipDragged) {
         return;
       }
-
       const currentShipNum = currentShipDragged.dataset.shipnum;
       e.target.classList.remove("ship-hover");
 
       // if the position ilegal, nothing more to do
-      const prevLocation =
-        shipsAndLocations[currentShipNum].location;
+      const prevLocation = shipsAndLocations[currentShipNum].location;
       shipsAndLocations[currentShipNum].location = e.target;
 
       if (!checkShipsPosition()) {
@@ -257,6 +282,16 @@ export const PlayerBoard = (gameControllerInput) => {
       // need to clear old ship location
       currentShipDragged = null;
     });
+
+    boardCell.addEventListener("dragend", (e) => {
+      if (
+        currentShipDragged &&
+        !e.target.classList.contains("board-cell") &&
+        !e.target.parentNode.parentNode.classList.contains("player-board")
+      ) {
+        renderShip(currentShipDragged.dataset.shipnum);
+      }
+    });
   });
 
   initializeShipsAndLocations(playerBoard);
@@ -267,4 +302,3 @@ export const PlayerBoard = (gameControllerInput) => {
 
   return playerBoard;
 };
-

@@ -8,6 +8,11 @@ const GameController = () => {
   let mCurrentPlayer;
   let mIsGameStarted = false;
 
+  const resetGame = () => {
+    mIsGameStarted = false;
+    mGameStatus = "undecided";
+  };
+
   const isGameStarted = () => mIsGameStarted;
 
   const getCurrentPlayer = () => mCurrentPlayer.getType();
@@ -66,11 +71,13 @@ const GameController = () => {
       getCurrentPlayer() === "Human"
         ? mAIPlayer.getBoard()
         : mHumanPlayer.getBoard();
+
     const moveStatus = mCurrentPlayer.makeMove(emenyBoard, coordination);
+
     if (moveStatus === "ERROR") {
       return null;
     }
-    console.log(moveStatus);
+
     if (moveStatus === "miss") {
       if (getCurrentPlayer() === "Human") {
         mCurrentPlayer = mAIPlayer;
@@ -95,7 +102,7 @@ const GameController = () => {
         mGameStatus = "AI";
       }
     }
-    return mAIPlayer.getBoard().getHitsBoard();
+    return emenyBoard.getHitsBoard();
   };
 
   const isPositioningLegal = (
@@ -120,6 +127,7 @@ const GameController = () => {
     getGameStatus,
     isPositioningLegal,
     isGameStarted,
+    resetGame,
   };
 };
 

@@ -11,23 +11,45 @@ const createBoardsSection = (gameController) => {
   return boardsContainer;
 };
 
+const cleanHitsFromBoards = () => {
+  const boards = document.querySelectorAll(".board-container");
+  boards.forEach((board) =>
+    [...board.children].forEach((cell) => {
+      cell.classList.remove("miss", "hit");
+    }),
+  );
+};
+
 const createStartNewGameButton = (gameController) => {
   const startNewGameContainer = createElement("div", ["new-game-container"]);
   const newGameButton = createElement("button", ["new-game"]);
   newGameButton.textContent = "Start New Game";
 
   newGameButton.addEventListener("click", () => {
-    // console.log(arrayOfNTilesLongShip(2))
+    resetGameButton.classList.toggle('hidden');
+    newGameButton.classList.toggle('hidden');
     gameController.startNewGame(
       arrayOfNTilesLongShip(4),
       arrayOfNTilesLongShip(3),
       arrayOfNTilesLongShip(2),
       arrayOfNTilesLongShip(1),
-      false
+      false,
     );
   });
 
+  const resetGameButton = createElement("button", ["reset-game"]);
+  resetGameButton.textContent = "Reset Game";
+
+  resetGameButton.addEventListener("click", () => {
+    resetGameButton.classList.toggle('hidden');
+    newGameButton.classList.toggle('hidden');
+    gameController.resetGame();
+    cleanHitsFromBoards();
+  });
+  resetGameButton.classList.toggle('hidden');
+
   startNewGameContainer.appendChild(newGameButton);
+  startNewGameContainer.appendChild(resetGameButton);
 
   return startNewGameContainer;
 };
