@@ -62,8 +62,11 @@ const GameController = () => {
     if (mGameStatus !== "undecided") {
       return null;
     }
-
-    const moveStatus = mCurrentPlayer.makeMove(coordination);
+    const emenyBoard =
+      getCurrentPlayer() === "Human"
+        ? mHumanPlayer.getBoard()
+        : mAIPlayer.getBoard();
+    const moveStatus = mCurrentPlayer.makeMove(emenyBoard, coordination);
     if (moveStatus === "ERROR") {
       return null;
     }

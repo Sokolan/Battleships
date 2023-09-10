@@ -125,7 +125,7 @@ describe("makeMove() ", () => {
     expect(gameController.getCurrentPlayer()).toBe("Human");
     gameController.makeMove([0, 0]);
     expect(humanPlayer.makeMove.mock.calls).toHaveLength(1);
-    expect(humanPlayer.makeMove.mock.calls[0][0]).toEqual([0, 0]);
+    expect(humanPlayer.makeMove.mock.calls[0][1]).toEqual([0, 0]);
   });
   test("should trigger AIPlayer.makeMove() ", () => {
     humanPlayer.makeMove.mockReturnValueOnce("miss");
