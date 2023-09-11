@@ -154,7 +154,8 @@ describe("makeMove() ", () => {
     aIPlayer.getBoard().getHitsBoard.mockReturnValue(gameboard.getHitsBoard());
     expect(gameController.makeMove([0,0])).toEqual(gameboard.getHitsBoard());
     // for AI player
-    aIPlayer.makeMove.mockReturnValueOnce(gameboard.getHitsBoard());
+    aIPlayer.makeMove.mockReturnValueOnce("miss");
+    humanPlayer.getBoard().getHitsBoard.mockReturnValue(gameboard.getHitsBoard());
     expect(gameController.makeMove()).toEqual(gameboard.getHitsBoard());
   });
 });
