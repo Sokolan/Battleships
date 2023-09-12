@@ -1,6 +1,5 @@
 import "../../../styles/style.css";
 
-import createElement from "./util/utils";
 import Header from "./components/header";
 import Body from "./components/body";
 import Footer from "./components/footer";
