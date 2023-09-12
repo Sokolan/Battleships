@@ -20,21 +20,6 @@ const AIPlayer = () => {
     return result;
   };
 
-  const generateRandomPositions = (container, length) => {
-    const orientations = ["vertical", "horizontal"];
-    // 1 - 4 tiles, 2 - 3 tiles, 3 - 2 tiles, 4 - 1 tiles
-    const numOfShips = 4 - length + 1;
-    for (let i = 0; i < numOfShips; i += 1) {
-      container[i][0] = [
-        Math.floor(Math.random() * 10),
-        Math.floor(Math.random() * 10),
-      ];
-      if (length > 1) {
-        container[i][1] = orientations[Math.floor(Math.random() * 2)];
-      }
-    }
-  };
-
   mPlayer.placeShips = () => {
     mPlayer.getBoard().placeShipsInRandomPositions();
   };
