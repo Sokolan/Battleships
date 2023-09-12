@@ -24,10 +24,10 @@ const cleanHitsFromBoards = () => {
 const createStartNewGameButton = (gameController) => {
   const startNewGameContainer = createElement("div", ["new-game-container"]);
   const newGameButton = createElement("button", ["new-game"]);
-  newGameButton.textContent = "Start New Game";
+  newGameButton.textContent = "✴ Start New Game ✴";
   
   const resetGameButton = createElement("button", ["reset-game"]);
-  resetGameButton.textContent = "Reset Game";
+  resetGameButton.textContent = "Reset ✴ Game";
 
 
   newGameButton.addEventListener("click", () => {
