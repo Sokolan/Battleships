@@ -20,34 +20,23 @@ const AIPlayer = () => {
     return result;
   };
 
-  // Enemy board should have placeShip
-  /* default board:
-   *     0 1 2 3 4 5 6 7 8 9
-   *  0 [3, ,2,2, ,1, ,2, , ]
-   *  1 [3, , , , , , ,2, , ]
-   *  2 [3, ,3,3,3, , , , , ]
-   *  3 [ , , , , , ,4,4,4,4]
-   *  4 [1, , , , , , , , , ]
-   *  5 [ , ,2,2, , , , , , ]
-   *  6 [1, , , , , , , , , ]
-   *  7 [ , , , , , , , , , ]
-   *  8 [ , , , , , , , ,1, ]
-   *  9 [ , , , , , , , , , ]
-   */
-
-  mPlayer.placeShips = (defaultArrangement = true) => {
-    if (defaultArrangement) {
-      mPlayer.getBoard().placeShip([0, 0], 3, "vertical");
-      mPlayer.getBoard().placeShip([0, 2], 2, "horizontal");
-      mPlayer.getBoard().placeShip([0, 5], 1);
-      mPlayer.getBoard().placeShip([0, 7], 2, "vertical");
-      mPlayer.getBoard().placeShip([2, 2], 3, "horizontal");
-      mPlayer.getBoard().placeShip([3, 6], 4, "horizontal");
-      mPlayer.getBoard().placeShip([4, 0], 1);
-      mPlayer.getBoard().placeShip([5, 2], 2, "horizontal");
-      mPlayer.getBoard().placeShip([6, 0], 1);
-      mPlayer.getBoard().placeShip([8, 8], 1);
+  const generateRandomPositions = (container, length) => {
+    const orientations = ["vertical", "horizontal"];
+    // 1 - 4 tiles, 2 - 3 tiles, 3 - 2 tiles, 4 - 1 tiles
+    const numOfShips = 4 - length + 1;
+    for (let i = 0; i < numOfShips; i += 1) {
+      container[i][0] = [
+        Math.floor(Math.random() * 10),
+        Math.floor(Math.random() * 10),
+      ];
+      if (length > 1) {
+        container[i][1] = orientations[Math.floor(Math.random() * 2)];
+      }
     }
+  };
+
+  mPlayer.placeShips = () => {
+    mPlayer.getBoard().placeShipsInRandomPositions();
   };
 
   return mPlayer;

@@ -194,13 +194,12 @@ const Gameboard = () => {
     );
 
   const resetBoard = () => {
-    mHitsBoard.forEach((row) => row.map(() => Array(10).fill("")));
-    mShipsBoard.forEach((row) => row.map(() => Array(10).fill(null)));
+    mHitsBoard.forEach((row) => row.forEach((_, index) => { row[index] = ""; }));
+    mShipsBoard.forEach((row) => row.forEach((_, index) => { row[index] = null; }));
   };
 
   const mPlaceArrayOfShips = (shipsLocations, shipSize) => {
-    let isArrangementLegal;
-    isArrangementLegal = shipsLocations.every((shipLocation) => {
+    const isArrangementLegal = shipsLocations.every((shipLocation) => {
       let canPlaceShip;
       if (shipSize > 1) {
         canPlaceShip = placeShip(shipLocation[0], shipSize, shipLocation[1]);
@@ -218,18 +217,44 @@ const Gameboard = () => {
     twoTilesLocations,
     oneTileLocations,
   ) => {
-    const isFourTilesLegal = mPlaceArrayOfShips(fourTileLocations, 4);
-    const isThreeTilesLegal = mPlaceArrayOfShips(threeTileLocations, 3);
-    const isTwoTilesLegal = mPlaceArrayOfShips(twoTilesLocations, 2);
-    const isOneTilesLegal = mPlaceArrayOfShips(oneTileLocations, 1);
+    if (!mPlaceArrayOfShips(fourTileLocations, 4)) return false;
+    if (!mPlaceArrayOfShips(threeTileLocations, 3)) return false;
+    if (!mPlaceArrayOfShips(twoTilesLocations, 2)) return false;
+    if (!mPlaceArrayOfShips(oneTileLocations, 1)) return false;
     resetBoard();
 
-    return (
-      isFourTilesLegal &&
-      isThreeTilesLegal &&
-      isTwoTilesLegal &&
-      isOneTilesLegal
-    );
+    return true;
+  };
+
+
+  const mTryRandomPosition = () => {
+    const orientations = ["vertical", "horizontal"];
+
+    for (let i = 0; i < 4; i += 1) {
+      for (let j = 0; j < 4 - i; j += 1) {
+        if (
+          !placeShip(
+            [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)],
+            i + 1,
+            orientations[Math.floor(Math.random() * 2)],
+          )
+        ) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  const placeShipsInRandomPositions = () => {
+    let positioningFound = false;
+    while (!positioningFound) {
+      positioningFound = mTryRandomPosition();
+      if (!positioningFound) {
+        resetBoard();
+      }
+    }
+    return true;
   };
 
   return {
@@ -240,6 +265,7 @@ const Gameboard = () => {
     getBoardSize,
     resetBoard,
     isPositioningLegal,
+    placeShipsInRandomPositions,
   };
 };
 

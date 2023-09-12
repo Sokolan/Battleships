@@ -139,6 +139,12 @@ export const getHitsOnPlayerBoard = () => {
     const humanHitsBoard = gameController.makeMove();
     renderHits(humanHitsBoard);
   }
+  if (gameController.getGameStatus() === "AI") {
+    const modal = document.querySelector(".winner-modal-container");
+    const modalParagraph = document.querySelector(".winner-modal-content>p");
+    modalParagraph.textContent = "Congratulations! You've wan!"
+    modal.style.display = "flex";
+  }
 };
 
 const renderShip = (shipNum) => {
@@ -187,7 +193,7 @@ const setShipsEventListeners = () => {
       currentShipDragged = e.target;
       deRenderShip(currentShipDragged.dataset.shipnum);
     });
-    ship.addEventListener("click", (e) => {
+    ship.addEventListener("click", () => {
       const switchDirection = () => {
         const direction = shipAndLocation.ship.dataset.orientation;
         if (direction === "horizontal") {

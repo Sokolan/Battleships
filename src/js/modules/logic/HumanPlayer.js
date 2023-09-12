@@ -8,17 +8,6 @@ const HumanPlayer = () => {
   mPlayer.makeMove = (enemyBoard, coordination) =>
     enemyBoard.recieveAttack(coordination);
 
-  const mPlaceArrayOfShips = (shipsLocations, shipSize) => {
-    shipsLocations.forEach((shipLocation) => {
-      if (shipSize > 1) {
-        mPlayer
-          .getBoard()
-          .placeShip(shipLocation[0], shipSize, shipLocation[1]);
-      } else {
-        mPlayer.getBoard().placeShip(shipLocation[0], shipSize);
-      }
-    });
-  };
   // Enemy board should have placeShip
   /* default board:
    *     0 1 2 3 4 5 6 7 8 9
@@ -63,10 +52,10 @@ const HumanPlayer = () => {
       )) {
         return false;
       }
-    mPlaceArrayOfShips(fourTileLocations, 4);
-    mPlaceArrayOfShips(threeTileLocations, 3);
-    mPlaceArrayOfShips(twoTilesLocations, 2);
-    mPlaceArrayOfShips(oneTileLocations, 1);
+    mPlayer.placeArrayOfShips(fourTileLocations, 4);
+    mPlayer.placeArrayOfShips(threeTileLocations, 3);
+    mPlayer.placeArrayOfShips(twoTilesLocations, 2);
+    mPlayer.placeArrayOfShips(oneTileLocations, 1);
 
     return true;
   };

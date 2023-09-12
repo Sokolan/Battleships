@@ -40,6 +40,15 @@ const EnemyBoard = (gameController) => {
       // render the move
       renderEnemyHits(enemyHitsBoard);
 
+      // check if player wan
+      if (gameController.getGameStatus() === "Human") {
+        const modal = document.querySelector(".winner-modal-container");
+        const modalParagraph = document.querySelector(".winner-modal-content>p");
+        modalParagraph.textContent = "Congratulations! You've wan!"
+        modal.style.display = "flex";
+        return;
+      }
+
       if (gameController.getCurrentPlayer() === "AI") {
         getHitsOnPlayerBoard();
       }

@@ -365,6 +365,7 @@ describe("Test allShipsSunk:", () => {
   let gameboard;
   
   beforeEach(() => {
+    jest.restoreAllMocks();
     gameboard = Gameboard();
   });
 
@@ -404,3 +405,23 @@ describe("Test allShipsSunk:", () => {
     expect(gameboard.allShipsSunk()).toBe(true);
   })
 });
+
+// TODO: find a way to test placeShipsInRandomPositions
+// describe.only("placeShipsInRandomPositions() ", () => {
+//   let gameboard;
+  
+//   beforeEach(() => {
+//     // jest.restoreAllMocks();
+//     gameboard = Gameboard();
+//   });
+//   test("should have 10 consecutively true return values from placeShip()", () => {
+//     const spy = jest.spyOn(gameboard, 'placeShip');
+//     gameboard.placeShip([0,0], 1);
+//     gameboard.placeShipsInRandomPositions();
+//     console.log(spy.mock.results.length);
+//     console.log(spy.mock);
+//     for (let i = spy.mock.results.length - 10 ; i < spy.mock.results.length ; i += 1) {
+//       expect(spy.mock.results[i].value).toBe(true);
+//     }
+//   })
+// })

@@ -4,6 +4,7 @@ jest.mock("../js/modules/logic/Gameboard", () =>
     recieveAttack: jest.fn(),
     getBoardSize: jest.fn(),
     getHitsBoard: jest.fn(),
+    placeShipsInRandomPositions: jest.fn(),
   })
 );
 
@@ -73,32 +74,20 @@ describe("test placeShips: ", () => {
     aiPlayer = AIPlayer();
     gameboard = Gameboard();
   });
-  test("TEST: place ships default", () => {
+  test("TEST: place ships", () => {
     gameboard.placeShip.mockReturnValue(true);
     aiPlayer.placeShips();
-    /* default board:
-     *     0 1 2 3 4 5 6 7 8 9
-     *  0 [3, ,2,2, ,1, ,2, , ]
-     *  1 [3, , , , , , ,2, , ]
-     *  2 [3, ,3,3,3, , , , , ]
-     *  3 [ , , , , , ,4,4,4,4]
-     *  4 [1, , , , , , , , , ]
-     *  5 [ , ,2,2, , , , , , ]
-     *  6 [1, , , , , , , , , ]
-     *  7 [ , , , , , , , , , ]
-     *  8 [ , , , , , , , ,1, ]
-     *  9 [ , , , , , , , , , ]
-     */
-    expect(gameboard.placeShip.mock.calls).toHaveLength(10);
-    expect(gameboard.placeShip.mock.calls).toContainEqual([[3, 6], 4, "horizontal"]);
-    expect(gameboard.placeShip.mock.calls).toContainEqual([[0, 0], 3, "vertical"]);
-    expect(gameboard.placeShip.mock.calls).toContainEqual([[2, 2], 3, "horizontal"]);
-    expect(gameboard.placeShip.mock.calls).toContainEqual([[0, 2], 2, "horizontal"]);
-    expect(gameboard.placeShip.mock.calls).toContainEqual([[0, 7], 2, "vertical"]);
-    expect(gameboard.placeShip.mock.calls).toContainEqual([[5, 2], 2, "horizontal"]);
-    expect(gameboard.placeShip.mock.calls).toContainEqual([[0, 5], 1]);
-    expect(gameboard.placeShip.mock.calls).toContainEqual([[4, 0], 1]);
-    expect(gameboard.placeShip.mock.calls).toContainEqual([[6, 0], 1]);
-    expect(gameboard.placeShip.mock.calls).toContainEqual([[8, 8], 1]);
+    gameboard.placeShipsInRandomPositions.mockReturnValue(true);
+    expect(gameboard.placeShipsInRandomPositions.mock.calls).toHaveLength(1);
+    // expect(gameboard.placeShip.mock.calls).toContainEqual([[3, 6], 4, "horizontal"]);
+    // expect(gameboard.placeShip.mock.calls).toContainEqual([[0, 0], 3, "vertical"]);
+    // expect(gameboard.placeShip.mock.calls).toContainEqual([[2, 2], 3, "horizontal"]);
+    // expect(gameboard.placeShip.mock.calls).toContainEqual([[0, 2], 2, "horizontal"]);
+    // expect(gameboard.placeShip.mock.calls).toContainEqual([[0, 7], 2, "vertical"]);
+    // expect(gameboard.placeShip.mock.calls).toContainEqual([[5, 2], 2, "horizontal"]);
+    // expect(gameboard.placeShip.mock.calls).toContainEqual([[0, 5], 1]);
+    // expect(gameboard.placeShip.mock.calls).toContainEqual([[4, 0], 1]);
+    // expect(gameboard.placeShip.mock.calls).toContainEqual([[6, 0], 1]);
+    // expect(gameboard.placeShip.mock.calls).toContainEqual([[8, 8], 1]);
   });
 });

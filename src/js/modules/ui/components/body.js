@@ -24,6 +24,10 @@ const createStartNewGameButton = (gameController) => {
   const startNewGameContainer = createElement("div", ["new-game-container"]);
   const newGameButton = createElement("button", ["new-game"]);
   newGameButton.textContent = "Start New Game";
+  
+  const resetGameButton = createElement("button", ["reset-game"]);
+  resetGameButton.textContent = "Reset Game";
+
 
   newGameButton.addEventListener("click", () => {
     resetGameButton.classList.toggle('hidden');
@@ -36,9 +40,6 @@ const createStartNewGameButton = (gameController) => {
       false,
     );
   });
-
-  const resetGameButton = createElement("button", ["reset-game"]);
-  resetGameButton.textContent = "Reset Game";
 
   resetGameButton.addEventListener("click", () => {
     resetGameButton.classList.toggle('hidden');
@@ -54,11 +55,41 @@ const createStartNewGameButton = (gameController) => {
   return startNewGameContainer;
 };
 
+const createWinnerModal = () => {
+  const closeModal = () => {
+    const modal = document.querySelector('.winner-modal-container');
+    modal.style.display = "none";
+  }
+
+  const modalContainer = createElement('div', ["winner-modal-container"]);
+  const modalContent = createElement('div', ["winner-modal-content"]);
+
+  modalContainer.appendChild(modalContent);
+
+  const modalText = createElement('p', ["winner-modal"]);
+  const modalExitButton = createElement('button', ["winner-modal-exit"]);
+  
+  modalExitButton.textContent = "X";
+  modalExitButton.addEventListener("click", closeModal);
+  window.addEventListener("click", (e) => {
+    if (e.target === modalContainer) {
+      closeModal();
+    }
+  });
+
+  modalContent.appendChild(modalText);
+  modalContent.appendChild(modalExitButton);
+
+
+  return modalContainer;
+}
+
 const Body = (gameController) => {
   const body = createElement("div", [], [["id", "body"]]);
 
   body.appendChild(createBoardsSection(gameController));
   body.appendChild(createStartNewGameButton(gameController));
+  body.appendChild(createWinnerModal());
   return body;
 };
 
