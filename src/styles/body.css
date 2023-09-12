@@ -1,10 +1,13 @@
 #body {
-  background: red;
+  background: linear-gradient(0deg, #01161a 15%, #0d8fa9 60%, #bbecf6);
   display: grid;
+  padding: 10px
 }
 
 .boards-container {
   display: grid;
+  gap: 15px;
+
   grid-template-columns: 1fr 1fr;
   justify-items: center;
   align-items: center;
@@ -14,15 +17,27 @@
   height: 30%;
   --grid-size: 10;
   --cell-size: 40px;
+  --ship-color: rgb(12, 20, 74);
   display: grid;
+  gap: 2px;
+  height: fit-content;
   grid-template-columns: repeat(var(--grid-size), var(--cell-size));
   grid-template-rows: repeat(var(--grid-size), var(--cell-size));
+  box-shadow: 0 0 8px 0px rgb(65, 189, 235);
+  background-color: rgba(65, 190, 235, 0.427);
 }
 
 .board-cell {
-  background-color: aliceblue;
-  border: 1px solid black;
+  background: rgb(208, 233, 255);
+  border: 1px solid rgb(21, 0, 255);
+  border-radius: 8px;
+  transition: 0.3s;
   /* overflow:visible; */
+}
+
+.enemy-baord .board-cell:hover {
+  box-shadow: 0 0 8px 0px rgb(0, 153, 255);
+  transform: scale(1.1);
 }
 
 .ships-container {
@@ -31,17 +46,13 @@
 }
 
 .ship-container {
-  z-index: 2;
   height: 40px;
   width: 40px;
   cursor: move;
-  /* width: 40px; */
-  /* width: fit-content; */
-  ;
 }
 
 .ship-tile {
-  background: grey;
+  background: var(--ship-color);
 }
 
 .ship-hover {
@@ -57,15 +68,18 @@
 }
 
 .board-cell {
-  transition:all 0.6s ;
+  transition: all 0.2s ;
 }
 
-.hit{
-  background-color: red;
+.board-cell.hit{
+  background: radial-gradient(circle,
+    rgb(252, 135, 2) 5%,
+    rgb(255, 0, 0) 20%,
+    var(--ship-color) 75%);
 }
 
 .miss {
-  background-color: blue;
+  background-color: rgb(25, 207, 227);
 }
 
 .new-game-container {
@@ -73,45 +87,6 @@
   width: fit-content;
   align-self: center;
   justify-self: center;
-}
-
-.hidden {
-  display: none;
-}
-
-.winner-modal-container {
-  display:  none;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 128, 0, 0.394);
-  height: 100vh;
-  width: 100vw;
-  justify-content: center;
-  align-items: center;
-}
-
-.winner-modal-content {
-  background-color: wheat;
-  padding: 20px;
-  align-self: center;
-  justify-self: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-}
-
-.winner-modal-content > p {
-  font-weight: 600;
-  font-size: 22px;
-}
-
-button.winner-modal-exit {
-  padding: 10px 15px;
-  border-radius: 5px;
-  border: 1px solid rgb(136, 136, 136);
 }
 
 button {

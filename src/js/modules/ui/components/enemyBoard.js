@@ -46,6 +46,7 @@ const EnemyBoard = (gameController) => {
         const modalParagraph = document.querySelector(".winner-modal-content>p");
         modalParagraph.textContent = "Congratulations! You've wan!"
         modal.style.display = "flex";
+        modal.firstElementChild.classList.add("ai-winner");
         return;
       }
 

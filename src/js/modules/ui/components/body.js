@@ -1,4 +1,5 @@
 import "../../../../styles/body.css";
+import "../../../../styles/winnerModal.css";
 import createElement from "../util/utils";
 import { PlayerBoard, arrayOfNTilesLongShip } from "./playerBoard";
 import EnemyBoard from "./enemyBoard";
@@ -63,10 +64,10 @@ const createWinnerModal = () => {
 
   const modalContainer = createElement('div', ["winner-modal-container"]);
   const modalContent = createElement('div', ["winner-modal-content"]);
-
   modalContainer.appendChild(modalContent);
 
   const modalText = createElement('p', ["winner-modal"]);
+  
   const modalExitButton = createElement('button', ["winner-modal-exit"]);
   
   modalExitButton.textContent = "X";

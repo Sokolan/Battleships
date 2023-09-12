@@ -142,8 +142,8 @@ export const getHitsOnPlayerBoard = () => {
   if (gameController.getGameStatus() === "AI") {
     const modal = document.querySelector(".winner-modal-container");
     const modalParagraph = document.querySelector(".winner-modal-content>p");
-    modalParagraph.textContent = "Congratulations! You've wan!"
-    modal.style.display = "flex";
+    modalParagraph.textContent = "Unfortunately you've lost";
+    modal.firstElementChild.style.display = "flex";
   }
 };
 
@@ -229,12 +229,16 @@ export const PlayerBoard = (gameControllerInput) => {
         !e.target.classList.contains("board-cell") ||
         e.target.classList.contains("ship-tile")
       ) {
-        return;
+        if (e.target !== currentShipDragged) {
+          return;
+        }
       }
 
       const prevLocation =
         shipsAndLocations[currentShipDragged.dataset.shipnum].location;
-      shipsAndLocations[currentShipDragged.dataset.shipnum].location = e.target;
+      if (e.target !== currentShipDragged) {
+        shipsAndLocations[currentShipDragged.dataset.shipnum].location = e.target;
+      }
 
       if (checkShipsPosition()) {
         e.target.classList.add("ship-hover");
@@ -267,11 +271,14 @@ export const PlayerBoard = (gameControllerInput) => {
       }
       const currentShipNum = currentShipDragged.dataset.shipnum;
       e.target.classList.remove("ship-hover");
-
+      
       // if the position ilegal, nothing more to do
       const prevLocation = shipsAndLocations[currentShipNum].location;
-      shipsAndLocations[currentShipNum].location = e.target;
 
+      if (!e.target.classList.contains("ship-container")) {
+        shipsAndLocations[currentShipNum].location = e.target;
+      }
+      
       if (!checkShipsPosition()) {
         shipsAndLocations[currentShipNum].location = prevLocation;
         renderShip(currentShipNum);
@@ -280,9 +287,11 @@ export const PlayerBoard = (gameControllerInput) => {
       }
       // If the position is legal and we're in board-cell element and we're dragging a ship
       // We can add our ship safely
-      e.target.appendChild(currentShipDragged);
       deRenderShip(currentShipNum);
-      shipsAndLocations[currentShipNum].location = e.target;
+      if (!e.target.classList.contains("ship-container")) {
+        e.target.appendChild(currentShipDragged);
+        shipsAndLocations[currentShipNum].location = e.target;
+      }
       renderShip(currentShipNum);
 
       // need to clear old ship location

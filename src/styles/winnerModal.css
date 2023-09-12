@@ -1,0 +1,79 @@
+@font-face {
+  font-family: Syne;
+  src: url("../assets/fonts/StardosStencil-Bold.ttf");
+}
+
+.hidden {
+  display: none;
+}
+
+.winner-modal-container {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgba(11, 45, 113, 0.554);
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+}
+
+.winner-modal-content {
+  background-color: rgb(255, 255, 255);
+  padding: 24px 32px;
+  --winner-color: green;
+  --looser-color: red;
+  --border-radius: 4px;
+  border-radius: 20px;
+  border: 1px solid rgb(137, 125, 242);
+  align-self: center;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.winner-modal-content > p {
+  /* font-weight: 600; */
+  font-size: 40px;
+  font-family: Syne;
+  word-spacing: 5px;
+  letter-spacing: 1px;
+  margin: 5px;
+}
+
+button.winner-modal-exit {
+  align-self: flex-start;
+  font-size: 16px;
+  padding: 5px 7px;
+  font-weight: 600;
+  border-radius: 5px;
+  border: 1px solid rgb(136, 136, 136);
+  background: rgb(255, 255, 255);
+  box-shadow: 5px 5px rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
+  transition: 0.5s;
+}
+
+button.winner-modal-exit:hover {
+  border: 1px solid black;
+  box-shadow: none;
+  font-weight: 800;
+  transform: translate(5px, 5px)
+}
+
+.ai-winner {
+  border-top: var(--border-radius) solid var(--looser-color);
+  box-shadow: 0px 0px 40px 16px var(--looser-color);
+  background-color: rgb(255, 255, 255);
+  text-shadow: 1px 1px var(--looser-color);
+}
+
+.human-winner {
+  border-top: var(--border-radius) solid var(--winner-color);
+  text-shadow: 1px 1px var(--winner-color);
+  box-shadow: 0px 0px 40px 16px var(--winner-color);
+}

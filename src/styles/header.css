@@ -1,15 +1,25 @@
+@font-face {
+  font-family: AlphabetCapsLined;
+  src: url("../assets/fonts/AlphabetCapsLined.otf");
+}
+
 header {
-  background: yellow;
+  background-color: #2A2B2E;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .header-title {
+
   align-self: center;
 }
 
 .header-title > p {
-  font-size: 50px;
-  font-weight: 600;
+  margin: 0;
+  font-family: AlphabetCapsLined;
+  letter-spacing: 16px;
+  font-size: 60px;
+  text-shadow: 10px 0px rgba(255, 94, 0, 0.411);
+  color: white
 }

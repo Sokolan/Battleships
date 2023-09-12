@@ -4,14 +4,17 @@ footer {
   align-items: center;
   justify-content: center;
   gap: var(--gap-items);
+  background: linear-gradient(#01161a 5%, #000 100%);
+  /* border-top: 1px solid rgb(72, 91, 107); */
 }
 
 footer > p {
-  border-left: 1px solid rgb(0, 0, 0);
+  border-left: 1px solid #ffffffae;
   padding-left: var(--gap-items);
   padding: 5px 0px 5px var(--gap-items);
   margin: 0;
-  font-size: 30px;
+  font-size: 16px;
+  color: #ffffffbe;
   font-weight: 600;
 }
 
@@ -19,5 +22,5 @@ footer > p {
 .git-img {
   padding: 5px 0px 4px 0px;
   height: 20px;
-  /* filter: invert(1); */
+  filter: invert(0.8);
 }

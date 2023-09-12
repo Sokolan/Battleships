@@ -4,7 +4,7 @@ import createElement from "../util/utils";
 const createTitle = () => {
   const container = createElement('div', ['header-title']);
   const paragraph = createElement('p');
-  paragraph.textContent = "BattleShips";
+  paragraph.textContent = "•B•a•t•t•l•e•S•h•i•p•s•";
 
   container.appendChild(paragraph);
   return container;
