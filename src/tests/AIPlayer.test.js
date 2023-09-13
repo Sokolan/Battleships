@@ -8,7 +8,7 @@ jest.mock("../js/modules/logic/Gameboard", () =>
   })
 );
 
-import AIPlayer from "../js/modules/logic/AIPlayer";
+import HumanPlayer from "../js/modules/logic/HumanPlayer";
 import Gameboard from "../js/modules/logic/Gameboard";
 
 describe("AIPlayer() ", () => {

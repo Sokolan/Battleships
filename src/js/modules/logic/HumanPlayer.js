@@ -42,16 +42,18 @@ const HumanPlayer = () => {
       oneTileLocations.push([[6, 0]]);
       oneTileLocations.push([[8, 8]]);
     }
-    if (!mPlayer
-      .getBoard()
-      .isPositioningLegal(
-        fourTileLocations,
-        threeTileLocations,
-        twoTilesLocations,
-        oneTileLocations,
-      )) {
-        return false;
-      }
+    if (
+      !mPlayer
+        .getBoard()
+        .isPositioningLegal(
+          fourTileLocations,
+          threeTileLocations,
+          twoTilesLocations,
+          oneTileLocations,
+        )
+    ) {
+      return false;
+    }
     mPlayer.placeArrayOfShips(fourTileLocations, 4);
     mPlayer.placeArrayOfShips(threeTileLocations, 3);
     mPlayer.placeArrayOfShips(twoTilesLocations, 2);

@@ -10,7 +10,7 @@ const UIShip = (length, orientation) => {
       ["draggable", "true"],
       ["data-shipNum", shipNum],
       ["data-orientation", orientation],
-      ["data-length", length]
+      ["data-length", length],
     ],
   );
   shipNum += 1;

@@ -43,8 +43,10 @@ const EnemyBoard = (gameController) => {
       // check if player wan
       if (gameController.getGameStatus() === "Human") {
         const modal = document.querySelector(".winner-modal-container");
-        const modalParagraph = document.querySelector(".winner-modal-content>p");
-        modalParagraph.textContent = "Congratulations! You've wan!"
+        const modalParagraph = document.querySelector(
+          ".winner-modal-content>p",
+        );
+        modalParagraph.textContent = "Congratulations! You've won!";
         modal.style.display = "flex";
         modal.firstElementChild.classList.add("ai-winner");
         return;

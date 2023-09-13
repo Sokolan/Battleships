@@ -237,7 +237,8 @@ export const PlayerBoard = (gameControllerInput) => {
       const prevLocation =
         shipsAndLocations[currentShipDragged.dataset.shipnum].location;
       if (e.target !== currentShipDragged) {
-        shipsAndLocations[currentShipDragged.dataset.shipnum].location = e.target;
+        shipsAndLocations[currentShipDragged.dataset.shipnum].location =
+          e.target;
       }
 
       if (checkShipsPosition()) {
@@ -271,14 +272,14 @@ export const PlayerBoard = (gameControllerInput) => {
       }
       const currentShipNum = currentShipDragged.dataset.shipnum;
       e.target.classList.remove("ship-hover");
-      
+
       // if the position ilegal, nothing more to do
       const prevLocation = shipsAndLocations[currentShipNum].location;
 
       if (!e.target.classList.contains("ship-container")) {
         shipsAndLocations[currentShipNum].location = e.target;
       }
-      
+
       if (!checkShipsPosition()) {
         shipsAndLocations[currentShipNum].location = prevLocation;
         renderShip(currentShipNum);

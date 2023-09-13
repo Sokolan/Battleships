@@ -1,6 +1,5 @@
 import createElement from "../util/utils";
 
-
 const UIGameboard = () => {
   const board = createElement("div", ["board-container"]);
   const boardSize = 10;
@@ -15,8 +14,6 @@ const UIGameboard = () => {
           ["data-column", `${column}`],
         ],
       );
-
-      
 
       board.appendChild(boardCell);
     }
