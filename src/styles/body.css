@@ -38,9 +38,14 @@
   background: rgb(208, 233, 255);
   border: 1px solid rgb(21, 0, 255);
   border-radius: 8px;
-  transition: 0.5s;
   overflow: hidden;
+  transition: 0.5s;
+
   /* overflow:visible; */
+}
+
+.player-board .board-cell {
+  transition-delay: 0.6s;
 }
 
 .enemy-baord .board-cell:hover {
