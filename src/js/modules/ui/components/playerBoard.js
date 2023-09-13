@@ -126,6 +126,9 @@ const renderHits = (humanHitsBoard) => {
       );
       if (column === "o") cell.classList.add("hit");
       if (column === "x") cell.classList.add("miss");
+      if (column === "o" || column === "x") {
+        // cell.
+      }
     }),
   );
 };
